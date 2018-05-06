@@ -1,6 +1,10 @@
 FROM alpine:3.4
 
-MAINTAINER Philipp Schmitt <philipp@schmitt.co>
+# MAINTAINER Philipp Schmitt <philipp@schmitt.co>
+MAINTAINER Jason Antman <jason@jasonantman.com>
+
+ARG version
+ARG build_date
 
 RUN echo "@edge http://dl-4.alpinelinux.org/alpine/edge/community/" >> \
         /etc/apk/repositories \
@@ -32,5 +36,7 @@ ENV ZM_SERVER_HOST=localhost ZM_DB_TYPE=mysql ZM_DB_HOST=zm.db \
 COPY entrypoint.sh /entrypoint.sh
 COPY supervisord.conf /etc/supervisord.conf
 COPY mysql.sh /usr/bin/zm_mysql
+
+LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/jantman/docker-zoneminder" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
 
 ENTRYPOINT ["/entrypoint.sh"]
