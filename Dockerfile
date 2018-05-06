@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.7
 
 # MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 MAINTAINER Jason Antman <jason@jasonantman.com>
