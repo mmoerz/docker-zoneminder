@@ -6,11 +6,9 @@ MAINTAINER Jason Antman <jason@jasonantman.com>
 ARG version
 ARG build_date
 
-RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> \
-        /etc/apk/repositories \
-    && apk add --no-cache zoneminder@edge mysql-client lighttpd php5-fpm \
+RUN echo apk add --no-cache zoneminder mysql-client lighttpd php5-fpm \
         php5-pdo php5-pdo_mysql supervisor ffmpeg perl-data-uuid \
-        perl-data-dump@edge \
+        perl-data-dump \
     && apk add --no-cache --virtual build-deps make gcc musl-dev perl-dev \
        expat-dev \
     && cpan install XML::Parser::Expat Class::Std::Fast IO::Socket::Multicast \
