@@ -6,7 +6,7 @@ MAINTAINER Jason Antman <jason@jasonantman.com>
 ARG version
 ARG build_date
 
-RUN echo "@edge http://dl-4.alpinelinux.org/alpine/edge/community/" >> \
+RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> \
         /etc/apk/repositories \
     && apk add --no-cache zoneminder@edge mysql-client lighttpd php5-fpm \
         php5-pdo php5-pdo_mysql supervisor ffmpeg perl-data-uuid \
