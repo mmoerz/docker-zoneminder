@@ -22,7 +22,6 @@ install -d -o lighttpd -g lighttpd /var/run/zoneminder
 chown -R lighttpd:lighttpd "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
 chown -R lighttpd:wheel /var/log/zoneminder
 
-
 # Wait for DB server to come up
 # TODO
 if ! mysqladmin --wait=30 -P "$ZM_DB_PORT" -u "$ZM_DB_USER" --password="$ZM_DB_PASS" -h "$ZM_DB_HOST" ping
@@ -38,7 +37,7 @@ then
     echo -n "Database has not been initialized... "
     sed -i 's/`zm`/'"$ZM_DB_NAME"'/g' /usr/share/zoneminder/db/zm_create.sql
     # /etc/init.d/zoneminder setup
-    mysql -u "$ZM_DB_USER" -p"$ZM_DB_PASS" -h "$ZM_DB_HOST" -P "$ZM_DB_PORT" < "/usr/share/zoneminder/db/zm_create.sql"
+    mysql -u "$ZM_DB_USER" -p"$ZM_DB_PASS" -h "$ZM_DB_HOST" -P "$ZM_DB_PORT" < "/usr/share/zoneminder/db/zm_create.sql" || exit 1
     echo 'Done!'
 fi
 
