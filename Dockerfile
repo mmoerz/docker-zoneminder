@@ -21,7 +21,8 @@ RUN sed -i 's/\(user\|group\) = .*/\1 = lighttpd/g' /etc/php5/php-fpm.conf \
         /etc/lighttpd/lighttpd.conf \
     && sed -i 's|\(server.document-root\) = .*|\1 = var.basedir + "/htdocs/zm"|g' \
         /etc/lighttpd/lighttpd.conf \
-    && sed -i 's/\(ZM_WEB_\(USER\|GROUP\)\)=.*/\1=lighttpd/g' /etc/zm.conf
+    && sed -i 's/\(ZM_WEB_\(USER\|GROUP\)\)=.*/\1=lighttpd/g' /etc/zm.conf \
+    && mkdir -p /var/lib/zoneminder
 
 VOLUME /config
 
