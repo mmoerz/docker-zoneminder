@@ -19,6 +19,9 @@ sed -i "s/\(ZM_DB_USER\)=.*/\1=$ZM_DB_USER/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 
 install -d -o lighttpd -g lighttpd /var/run/zoneminder
+install -d -o lighttpd -g lighttpd /var/lib/zoneminder
+install -d -o lighttpd -g lighttpd /usr/share/webapps/zoneminder/htdocs/images
+install -d -o lighttpd -g lighttpd /usr/share/webapps/zoneminder/htdocs/events
 chown -R lighttpd:lighttpd "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
 chown -R lighttpd:wheel /var/log/zoneminder
 
