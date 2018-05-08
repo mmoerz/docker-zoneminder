@@ -21,6 +21,7 @@ RUN install -m 0755 -o root -g root /tmp/build/entrypoint.sh /entrypoint.sh \
     && install -m 0755 -o root -g root /tmp/build/mysql.sh /usr/bin/zm_mysql \
     && install -m 0644 -o root -g root /tmp/build/lighttpd.conf /etc/lighttpd/lighttpd.conf \
     && install -m 0644 -o root -g root /tmp/build/php-fpm.conf /etc/php5/php-fpm.conf \
+    && install -m 0644 -o root -g root /tmp/build/zm.conf /etc/zm.conf \
     && mkdir -p /var/lib/zoneminder /var/run/zoneminder \
     && rm -Rf /tmp/build
 
