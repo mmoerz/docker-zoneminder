@@ -2,7 +2,6 @@
 
 # Edit config file
 ZM_CONFIG=/etc/zm.conf
-ZM_SERVER_HOST=${ZM_SERVER_HOST:-localhost}
 ZM_DB_TYPE=${ZM_DB_TYPE:-mysql}
 ZM_DB_HOST=${ZM_DB_HOST:-zm.db}
 ZM_DB_PORT=${ZM_DB_PORT:-3306}
@@ -10,7 +9,6 @@ ZM_DB_NAME=${ZM_DB_NAME:-zoneminder}
 ZM_DB_USER=${ZM_DB_USER:-zoneminder}
 ZM_DB_PASS=${ZM_DB_PASS:-zoneminder}
 
-sed -i "s/\(ZM_SERVER_HOST\)=.*/\1=$ZM_SERVER_HOST/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_HOST\)=.*/\1=$ZM_DB_HOST/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PORT\)=.*/\1=$ZM_DB_PORT/g" "$ZM_CONFIG"
