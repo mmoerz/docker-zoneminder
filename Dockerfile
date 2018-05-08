@@ -16,16 +16,11 @@ RUN apk add --no-cache zoneminder mysql-client lighttpd php5-fpm \
     && apk del --no-cache build-deps
 
 COPY build /tmp/
-RUN \
-    install -m 0755 -o root -g root /tmp/build/entrypoint.sh /entrypoint.sh && \
-    install -m 0644 -o root -g root /tmp/build/supervisord.conf /etc/supervisord.conf && \
-    install -m 0755 -o root -g root /tmp/build/mysql.sh /usr/bin/zm_mysql && \
-RUN sed -i 's/\(user\|group\) = .*/\1 = lighttpd/g' /etc/php5/php-fpm.conf \
-    && sed -i 's/#.*\(include "mod_\(cgi\|fastcgi_fpm\).conf"\)/\1/g' \
-        /etc/lighttpd/lighttpd.conf \
-    && sed -i 's|\(server.document-root\) = .*|\1 = var.basedir + "/htdocs/zm"|g' \
-        /etc/lighttpd/lighttpd.conf \
-    && sed -i 's/\(ZM_WEB_\(USER\|GROUP\)\)=.*/\1=lighttpd/g' /etc/zm.conf \
+RUN install -m 0755 -o root -g root /tmp/build/entrypoint.sh /entrypoint.sh \
+    && install -m 0644 -o root -g root /tmp/build/supervisord.conf /etc/supervisord.conf \
+    && install -m 0755 -o root -g root /tmp/build/mysql.sh /usr/bin/zm_mysql \
+    && install -m 0644 -o root -g root /tmp/build/lighttpd.conf /etc/lighttpd/lighttpd.conf \
+    && install -m 0644 -o root -g root /tmp/build/php-fpm.conf /etc/php5/php-fpm.conf \
     && mkdir -p /var/lib/zoneminder /var/run/zoneminder \
     && rm -Rf /tmp/build
 
