@@ -22,11 +22,12 @@ docker run -it --name zoneminder \
     jantman/zoneminder
 ```
 
-Note that ZoneMinder runs and saves its data as the lighttpd user and group in the container, which should generally be UID 100 and GID 101.
+### Important Notes:
 
-Also note that ZoneMinder makes heavy use of shared memory files, i.e. ``/dev/shm``. You'll need to tune the ``--shm-size`` parameter for your number of cameras and resolution.
-
-/usr/share/webapps/zoneminder/htdocs ???
+* The above example runs the database on the Docker host, which for me is 172.17.0.1. I manage my container with Puppet so it's trivial for me to find out that IP, but that would probably be done better with a modification to the entrypoint to find the default route at runtime.
+* ZoneMinder runs and saves its data as the lighttpd user and group in the container, which should generally be UID 100 and GID 101. Be aware of that if mounting in host volumes for the images and events directories.
+* The above configuration stores log files in the container itself under ``/var/log``, which will disappear if you restart the container. It's probably best to either make that a volume or mount it in from the host.
+* __Note__ that ZoneMinder makes heavy use of shared memory files, i.e. ``/dev/shm``, for captures. You'll need to tune the ``--shm-size`` parameter for your number of cameras and resolution. There are tips for that [in the ZoneMinder wiki](https://wiki.zoneminder.com/Math_for_Memory_-_knowing_how_much_memory_you_need_and_how_to_optimize) and [on the forum](https://forums.zoneminder.com/viewtopic.php?f=11&t=9692&sid=5eb03841bd56e794c32586cc43531156).
 
 ## Building
 
