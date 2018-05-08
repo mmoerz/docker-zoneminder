@@ -18,8 +18,8 @@ docker run -it --name zoneminder \
     -p 8000:80 \
     -v /mnt/space3/zoneminder/images:/usr/share/webapps/zoneminder/htdocs/images \
     -v /mnt/space3/zoneminder/events:/usr/share/webapps/zoneminder/htdocs/events \
-    --shm-size=512m \
-    jantman/zoneminder:2018_05_07T22_13_23_04_00
+    --shm-size=1024m \
+    jantman/zoneminder
 ```
 
 Note that ZoneMinder runs and saves its data as the lighttpd user and group in the container, which should generally be UID 100 and GID 101.
