@@ -8,7 +8,7 @@ ARG build_date
 
 RUN apk add --no-cache zoneminder mysql-client lighttpd php5-fpm \
         php5-pdo php5-pdo_mysql supervisor ffmpeg perl-data-uuid \
-        perl-data-dump \
+        perl-data-dump php5-ctype \
     && apk add --no-cache --virtual build-deps make gcc musl-dev perl-dev \
        expat-dev \
     && cpan install XML::Parser::Expat Class::Std::Fast IO::Socket::Multicast \
