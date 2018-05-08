@@ -6,6 +6,14 @@ This was forked from [pschmitt/docker-zoneminder](https://github.com/pschmitt/do
 
 This image uses supervisord to manage multiple processes. I know, it's ugly and un-Docker-like. But it's how ZoneMinder, a Perl application originally released in 2002, needs to run. There's the ZoneMinder Perl daemon itself (which also spawns other processes) and php-fpm and lighttpd for the web UI. At least, unlike ZoneMinder's [official Dockerfiles](https://github.com/ZoneMinder/zmdockerfiles), this image isn't based on CentOS or Ubuntu and doesn't include MySQL/MariaDB running in the same container.
 
+For a quick overview of why it's like this, see the [ZoneMinder Components Documentation](http://zoneminder.readthedocs.io/en/stable/userguide/components.html).
+
+# CURRENT STATUS
+
+This is a work in progress and not yet working. The [pschmitt/docker-zoneminder](https://github.com/pschmitt/docker-zoneminder) image this is based on was last committed two years ago and the builds have been erroring for over a year.
+
+At the moment I have the UI working without obvious errors and cameras can record, but viewing/streaming/playback is broken. I'm working on that.
+
 ## Running
 
 You can ``docker pull jantman/zoneminder:latest`` or build it yourself.
