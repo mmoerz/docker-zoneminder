@@ -29,7 +29,7 @@ docker run -it --name zoneminder \
     --shm-size=1024m \
     -m 300M --memory-reservation 200M --kernel-memory 25M \
     --memory-swappiness=0 \
-    --cpu-period=250000 --cpu-quota=250000 \
+    --cpu-period=250000 --cpu-quota=500000 \
     jantman/zoneminder
 ```
 
@@ -44,7 +44,7 @@ docker run -it --name zoneminder \
   * ``--memory-reservation 200M`` - soft limit on 200MB of memory
   * ``--kernel-memory 25M`` - limit to 25MB of kernel memory (stack pages, slab pages, sockets and tcp memory pressure; Docker docs on [kernel memory constraints](https://docs.docker.com/engine/reference/run/#kernel-memory-constraints))
   * ``--memory-swappiness=0`` - turn off anonymous page swapping for the container, under the assumption that ZoneMinder will be nearly constantly busy (Docker docs on [swappiness constraint](https://docs.docker.com/engine/reference/run/#swappiness-constraint))
-  * ``--cpu-period=250000 --cpu-quota=250000`` - these enforce CPU bandwidth limits on the container, specificially giving it 100% of a CPU every 250ms period. See the Docker docs on [CPU period constraint](https://docs.docker.com/engine/reference/run/#cpu-period-constraint) and [CPU quota constraint](https://docs.docker.com/engine/reference/run/#cpu-quota-constraint) as well as the [CFS documentation on bandwidth limiting](https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt). Note these settings only apply to machines using the default scheduler (CFS).
+  * ``--cpu-period=250000 --cpu-quota=250000`` - these enforce CPU bandwidth limits on the container, specificially giving it two CPUs every 250ms period. See the Docker docs on [CPU period constraint](https://docs.docker.com/engine/reference/run/#cpu-period-constraint) and [CPU quota constraint](https://docs.docker.com/engine/reference/run/#cpu-quota-constraint) as well as the [CFS documentation on bandwidth limiting](https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt). Note these settings only apply to machines using the default scheduler (CFS).
 
 ## Building
 
