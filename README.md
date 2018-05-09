@@ -27,8 +27,6 @@ docker run -it --name zoneminder \
     -v /mnt/space3/zoneminder/images:/usr/share/webapps/zoneminder/htdocs/images \
     -v /mnt/space3/zoneminder/events:/usr/share/webapps/zoneminder/htdocs/events \
     --shm-size=1024m \
-    -m 500M --memory-reservation 400M --kernel-memory 200M \
-    --cpu-period=100000 --cpu-quota=500000 \
     jantman/zoneminder
 ```
 
@@ -38,10 +36,6 @@ docker run -it --name zoneminder \
 * ZoneMinder runs and saves its data as the lighttpd user and group in the container, which should generally be UID 100 and GID 101. Be aware of that if mounting in host volumes for the images and events directories.
 * The above configuration stores log files in the container itself under ``/var/log``, which will disappear if you restart the container. It's probably best to either make that a volume or mount it in from the host.
 * __Note__ that ZoneMinder makes heavy use of shared memory files, i.e. ``/dev/shm``, for captures. You'll need to tune the ``--shm-size`` parameter for your number of cameras and resolution. There are tips for that [in the ZoneMinder wiki](https://wiki.zoneminder.com/Math_for_Memory_-_knowing_how_much_memory_you_need_and_how_to_optimize) and [on the forum](https://forums.zoneminder.com/viewtopic.php?f=11&t=9692&sid=5eb03841bd56e794c32586cc43531156). As a quick overview, I have a single Amcrest ProHD IP2M-841B camera running at 1080p (1920x1080) 30fps 32-bit color. For testing I have my image (ring) buffer setup left at the default of 50 frames. According to the formula in the wiki, that should require approximately 475MB of shared memory, which lines up well with my running ZoneMinder reporting that it's using 39% of the 1024MB shm specified.
-* The above is an example of how I run this container on my own desktop computer. It includes some resource constraints as follows:
-  * ``-m 300M`` - hard limit on 300MB of memory for container (see Docker docs on [memory constraints](https://docs.docker.com/engine/reference/run/#user-memory-constraints))
-  * ``--memory-reservation 200M`` - soft limit on 200MB of memory
-  * ``--kernel-memory 25M`` - limit to 25MB of kernel memory (stack pages, slab pages, sockets and tcp memory pressure; Docker docs on [kernel memory constraints](https://docs.docker.com/engine/reference/run/#kernel-memory-constraints))
 
 ## Building
 
