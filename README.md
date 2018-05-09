@@ -27,7 +27,8 @@ docker run -it --name zoneminder \
     -v /mnt/space3/zoneminder/images:/usr/share/webapps/zoneminder/htdocs/images \
     -v /mnt/space3/zoneminder/events:/usr/share/webapps/zoneminder/htdocs/events \
     --shm-size=1024m \
-    -m 300M --memory-reservation 200M --kernel-memory 25M \
+    -m 500M --memory-reservation 400M --kernel-memory 200M \
+    --cpu-period=100000 --cpu-quota=500000 \
     jantman/zoneminder
 ```
 
