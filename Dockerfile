@@ -6,9 +6,11 @@ MAINTAINER Jason Antman <jason@jasonantman.com>
 ARG version
 ARG build_date
 
-RUN apk add --no-cache zoneminder mysql-client lighttpd php5-fpm \
+RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
+    && apk update \
+    && apk add --no-cache zoneminder mysql-client apache2 php5-apache2 php5-fpm \
         php5-pdo php5-pdo_mysql supervisor ffmpeg perl-data-uuid \
-        perl-data-dump php5-ctype \
+        perl-data-dump php5-ctype perl-sys-cpu@edgetest perl-log-log4perl perl-sys-meminfo \
     && apk add --no-cache --virtual build-deps make gcc musl-dev perl-dev \
        expat-dev \
     && cpan install XML::Parser::Expat Class::Std::Fast IO::Socket::Multicast \
@@ -17,10 +19,9 @@ RUN apk add --no-cache zoneminder mysql-client lighttpd php5-fpm \
 
 COPY build /tmp/build/
 RUN install -m 0755 -o root -g root /tmp/build/entrypoint.sh /entrypoint.sh \
+    && install -m 0644 -o root -g root /tmp/build/apache2_zoneminder.conf /etc/apache2/conf.d/zoneminder.conf \
     && install -m 0644 -o root -g root /tmp/build/supervisord.conf /etc/supervisord.conf \
     && install -m 0755 -o root -g root /tmp/build/mysql.sh /usr/bin/zm_mysql \
-    && install -m 0644 -o root -g root /tmp/build/lighttpd.conf /etc/lighttpd/lighttpd.conf \
-    && install -m 0644 -o root -g root /tmp/build/mod_cgi.conf /etc/lighttpd/mod_cgi.conf \
     && install -m 0644 -o root -g root /tmp/build/php-fpm.conf /etc/php5/php-fpm.conf \
     && install -m 0644 -o root -g root /tmp/build/zm.conf /etc/zm.conf \
     && mkdir -p /var/lib/zoneminder /var/run/zoneminder \

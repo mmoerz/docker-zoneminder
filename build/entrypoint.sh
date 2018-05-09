@@ -8,6 +8,7 @@ ZM_DB_PORT=${ZM_DB_PORT:-3306}
 ZM_DB_NAME=${ZM_DB_NAME:-zoneminder}
 ZM_DB_USER=${ZM_DB_USER:-zoneminder}
 ZM_DB_PASS=${ZM_DB_PASS:-zoneminder}
+SERVERNAME=${SERVERNAME:-localhost}
 
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_HOST\)=.*/\1=$ZM_DB_HOST/g" "$ZM_CONFIG"
@@ -16,12 +17,14 @@ sed -i "s/\(ZM_DB_NAME\)=.*/\1=$ZM_DB_NAME/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_USER\)=.*/\1=$ZM_DB_USER/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 
-install -d -o lighttpd -g lighttpd /var/run/zoneminder
-install -d -o lighttpd -g lighttpd /var/lib/zoneminder
-install -d -o lighttpd -g lighttpd /usr/share/webapps/zoneminder/htdocs/images
-install -d -o lighttpd -g lighttpd /usr/share/webapps/zoneminder/htdocs/events
-chown -R lighttpd:lighttpd "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
-chown -R lighttpd:wheel /var/log/zoneminder
+echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
+install -d -o apache -g apache /var/run/zoneminder
+install -d -o apache -g apache /var/lib/zoneminder
+install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/images
+install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/events
+chown -R apache:apache "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
+chown -R apache:wheel /var/log/zoneminder
+mkdir /run/apache2 && chown apache:apache /run/apache2
 
 # Wait for DB server to come up
 # TODO
