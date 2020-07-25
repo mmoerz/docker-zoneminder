@@ -10,7 +10,7 @@ ARG build_date
 RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
- alpine-sdk 
+ alpine-sdk perl-dev perl-utils git-perl perl-git perl-error perl libbz2 
 #
 # mysql-client gcrypt ffmpeg \
 #        apache2 php7-apache2 php7-fpm \
@@ -21,17 +21,19 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 #        perl-term-readkey perl-json perl-appconfig perl-template-toolkit \
 #        perl-common-sense perl-xml-twig perl-xml-xpath perl-xml-sax \
 #        perl-xml-sax-base perl-xml-namespacesupport perl-path-tiny \
-#        perl-ffi-checklib perl-file-chdir perl-term-size@edgetest \
+#        perl-ffi-checklib perl-file-chdir perl-term-size@edgetest perl-xml-parser \
 #        perl-alien-libxml2 perl-devel-hide perl-mime-charset \
 #        perl-io-socket-ssl \
 #        perl-doc \
 #        perl-test2-suite perl-test-warn perl-test-pod perl-test-mockobject \
 #        perl-test-class perl-test-leaktrace \
-#        perl-test-pod \
 #    && apk add --no-cache --virtual build-deps \
 # make gcc musl-dev perl-dev expat-dev \
-#    && cpan install XML::Parser::Expat Class::Std::Fast IO::Socket::Multicast \
+#    && cpan install Class::Std::Fast IO::Socket::Multicast \
 #    && cpan -f install SOAP::WSDL \
+# perl-test-pod-content perl-xml-libxml perl-cgi perl-test-mockobject
+# perl-test-warn perl-moose perl-test-cpan-meta perl-io-stringy perl-test-xml perl-test-class
+
 #    && apk add --no-cache --virtual zm-build-deps \
 # git cmake g++ \
 #        libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev \
@@ -43,13 +45,21 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 #COPY ressources /root/build/
 RUN adduser -D builder
 RUN addgroup builder abuild
-COPY zoneminder /home/builder/zoneminder/
-COPY perl-class-std-fast /home/builder/perl-class-std-fast/
+
+COPY --chown=builder:builder apks/ /home/builder/
+
+#COPY --chown=builder:builder perl-class-std /home/builder/perl-class-std/
+#COPY --chown=builder:builder perl-class-std-fast /home/builder/perl-class-std-fast/
+#COPY --chown=builder:builder zoneminder /home/builder/zoneminder/
 # copy abuild rsa keys 
 # you need to create your own!!!
-# these are not included!
+# read the .abuild/readme for more information
+#
 COPY .abuild/builder*.rsa.pub /etc/apk/keys/.
-COPY --chown=builder:builder .abuild /home/builder/
+COPY --chown=builder:builder .abuild /home/builder/.abuild/
+
+COPY --chown=builder:builder buildall.sh /home/builder/.
+
 
 
 #COPY entrypoint.sh /entrypoint.sh

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NOCACHE=--no-cache
-NOCACHE=
+#NOCACHE=
 
 version=$(git rev-parse --short HEAD)
 build_date=$(date -Iseconds)
