@@ -10,21 +10,40 @@ ARG build_date
 RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
-	zoneminder mysql-client apache2 php5-apache2 php5-fpm \
-        php5-pdo php5-pdo_mysql supervisor ffmpeg perl-data-uuid \
-        perl-data-dump php5-ctype perl-sys-cpu@edgetest perl-log-log4perl \
-	perl-sys-meminfo \
-    && apk add --no-cache --virtual \
-	build-deps make gcc musl-dev perl-dev \
-       	expat-dev \
+ mysql-client gcrypt ffmpeg \
+        apache2 php7-apache2 php7-fpm \
+        php7-pdo php7-pdo_mysql supervisor perl-data-uuid \
+        perl-data-dump php7-ctype perl-log-log4perl \
+	      perl-sys-meminfo perl-moose perl-cgi \
+        libxml2-dev \
+        perl-term-readkey perl-json perl-appconfig perl-template-toolkit \
+        perl-common-sense perl-xml-twig perl-xml-xpath perl-xml-sax \
+        perl-xml-sax-base perl-xml-namespacesupport perl-path-tiny \
+        perl-ffi-checklib perl-file-chdir perl-term-size@edgetest \
+        perl-alien-libxml2 perl-devel-hide perl-mime-charset \
+        perl-io-socket-ssl \
+        perl-doc \
+        perl-test2-suite perl-test-warn perl-test-pod perl-test-mockobject \
+        perl-test-class perl-test-leaktrace \
+        perl-test-pod \
+    && apk add --no-cache --virtual build-deps \
+ make gcc musl-dev perl-dev expat-dev \
     && cpan install XML::Parser::Expat Class::Std::Fast IO::Socket::Multicast \
     && cpan -f install SOAP::WSDL \
-    && apk del --no-cache build-deps
+    && apk add --no-cache --virtual zm-build-deps \
+ git cmake g++ \
+        libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev \
+        ffmpeg-dev x264-dev pcre-dev libgcrypt-dev vlc-dev libvncserver-dev \
+        libexecinfo-dev \
+        echo done
+#    && apk del --no-cache build-deps zm-build-deps
 
-COPY ressources /tmp/build/
+COPY ressources /root/build/
+
+
 COPY entrypoint.sh /entrypoint.sh
-RUN /tmp/build/install.sh && \
-      chmod 0755 /entrypoint.sh
+#RUN chmod 0755 /tmp/build/install.sh /entrypoint.sh
+#RUN /tmp/build/install.sh
 
 EXPOSE 80
 
