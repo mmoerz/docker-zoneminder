@@ -1,0 +1,11 @@
+How to create the public / private key
+--------------------------------------
+
+Create the private key:
+openssl genrsa -out builder.rsa
+
+Create the public key:
+openssl rsa -in builder.rsa -pubout -out builder.rsa.pub
+
+see https://wiki.alpinelinux.org/wiki/Include:Abuild-keygen for more
+information

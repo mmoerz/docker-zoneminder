@@ -48,8 +48,8 @@ COPY perl-class-std-fast /home/builder/perl-class-std-fast/
 # copy abuild rsa keys 
 # you need to create your own!!!
 # these are not included!
-COPY builder-*.rsa.pub /etc/apk/keys/.
-COPY builder-*.rsa.* /home/builder/.abuild/.
+COPY .abuild/builder*.rsa.pub /etc/apk/keys/.
+COPY --chown=builder:builder .abuild /home/builder/
 
 
 #COPY entrypoint.sh /entrypoint.sh
