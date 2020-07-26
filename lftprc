@@ -1,0 +1,5 @@
+set bmk:save-passwords yes
+set cmd:verify-host yes
+set ftp:ssl-force yes
+set ftp:ssl-protect-data yes
+set ssl:check-hostname yes

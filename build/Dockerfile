@@ -10,9 +10,13 @@ ARG build_date
 RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
- alpine-sdk perl-dev perl-utils git-perl perl-git perl-error perl libbz2 
+ alpine-sdk perl-dev perl-utils git-perl perl-git perl-error perl libbz2 \
+ bzip2-dev gzip zip lftp \
+ libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev \
+ ffmpeg-dev x264-dev pcre-dev libgcrypt-dev vlc-dev libvncserver-dev \
+ libexecinfo-dev
 #
-# mysql-client gcrypt ffmpeg \
+# mysql-client \
 #        apache2 php7-apache2 php7-fpm \
 #        php7-pdo php7-pdo_mysql supervisor perl-data-uuid \
 #        perl-data-dump php7-ctype perl-log-log4perl \
@@ -28,17 +32,12 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 #        perl-test-class perl-test-leaktrace \
 #    && apk add --no-cache --virtual build-deps \
 # make gcc musl-dev perl-dev expat-dev \
-#    && cpan install Class::Std::Fast IO::Socket::Multicast \
+#    && cpan install Class::Std::F+ast IO::Socket::Multicast \
 #    && cpan -f install SOAP::WSDL \
 # perl-test-pod-content perl-xml-libxml perl-cgi perl-test-mockobject
 # perl-test-warn perl-moose perl-test-cpan-meta perl-io-stringy perl-test-xml perl-test-class
 
 #    && apk add --no-cache --virtual zm-build-deps \
-# git cmake g++ \
-#        libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev \
-#        ffmpeg-dev x264-dev pcre-dev libgcrypt-dev vlc-dev libvncserver-dev \
-#        libexecinfo-dev \
-#        echo done
 #    && apk del --no-cache build-deps zm-build-deps
 
 #COPY ressources /root/build/
@@ -60,6 +59,7 @@ COPY --chown=builder:builder .abuild /home/builder/.abuild/
 COPY --chown=builder:builder buildall.sh /home/builder/.
 RUN chmod u+x /home/builder/buildall.sh
 
+COPY --chown=builder:builder lftpbookmarks /home/builder/.lftp/bookmarks
 
 
 #COPY entrypoint.sh /entrypoint.sh
