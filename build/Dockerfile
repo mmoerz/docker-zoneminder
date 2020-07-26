@@ -58,9 +58,7 @@ COPY --chown=builder:builder .abuild /home/builder/.abuild/
 COPY --chown=builder:builder buildall.sh /home/builder/.
 RUN chmod u+x /home/builder/buildall.sh
 
-COPY --chown=builder:builder lftpbookmarks /home/builder/.lftp/bookmarks
-COPY --chown=builder:builder lftprc /home/builder/.lftp/rc
-
+COPY --chown=builder:builder lftp /home/builder/.lftp
 
 #COPY entrypoint.sh /entrypoint.sh
 #RUN chmod 0755 /tmp/build/install.sh /entrypoint.sh
