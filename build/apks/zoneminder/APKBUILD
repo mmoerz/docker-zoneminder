@@ -35,7 +35,7 @@ makedepends="git cmake linux-headers
              ${_php}-cli
              polkit-dev vlc-dev x264-dev gzip zip"
 subpackages=$pkgname-doc
-source="zoneminder-$pkgver.tar.gz::https://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
+source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
 	$pkgname.initd
 	$pkgname-cmake-0001.patch
 	git-archive-all.sh
@@ -50,7 +50,7 @@ source="zoneminder-$pkgver.tar.gz::https://natoka.de/archive/zoneminder/zonemind
 #     - CVE-2017-5368
 
 _giturl="https://github.com/ZoneMinder/zoneminder.git"
-_upload="dev.alpinelinux.org:/archive/$pkgname/"
+_upload="natokade:/natoka/archive/$pkgname/"
 builddir="$srcdir/$pkgname-$_date/linux_lib/libcrystalhd"
 
 snapshot() {
@@ -60,16 +60,16 @@ snapshot() {
 	cd "$srcdir"
 	msg "Creating snapshot: $_pkg"
 	rm -rf ${_giturl##*/}
-	#git clone --depth=1 --bare --recurse-submodules $_giturl
 	git clone --depth=1 --recurse-submodules $_giturl
-	#git --git-dir ${_giturl##*/} archive -o $_pkg \
-	#	--prefix=$pkgname-$_date/ HEAD
+	msg "srcdir: $srcdir, pkgname: $pkgname"
 	cd $pkgname && \
 	   ../../git-archive-all.sh --format tar.gz \
            --prefix $pkgname-$_date/ ../$_pkg
-#          git archive-all -o ../$_pkg --prefix=$pkgname-$_date/ HEAD
 	msg "Uploading to $_upload"
-#rsync -Lave ssh $_pkg $_upload
+	cd "$srcdir"
+	lftp -c "open natokade; \
+                 put -O /natoka/archive/zoneminder/ zoneminder-20200726.tar.gz"
+	msg "Updating checksums"
 	cd "$startdir"
 	sed -i -e "s/^pkgver=.*/pkgver=$_date/" \
 		APKBUILD
@@ -77,7 +77,6 @@ snapshot() {
 }
 
 builddir=$srcdir/zoneminder-$pkgver
-#builddir=$srcdir/zoneminder-master
 prepare() {
   default_prepare
 
@@ -125,7 +124,7 @@ package() {
 	ln -sf /usr/share/webapps/zoneminder/cgi-bin \
 		"$pkgdir"/var/www/localhost/cgi-bin/zm
 }
-sha512sums="74d6ceee8d2f7bfe669a1e0c05345cb5c4a4b5c6e354980bbaddb86333d478c2744fed73a17355e481431608ca4fefd2235a28d7dfaea0a6fc8b95e66a026917  zoneminder-20200726.tar.gz
+sha512sums="ab756e037df12a3b76a915ffc6f7c766c1d47bb72f2763653a2886dc4e715e1bd4fdc5a1d32f856147d786e20fda1e6bad557a3a8da8550de1a4d645d7f76551  zoneminder-20200726.tar.gz
 ae02daacc41e2b32ca0da5cf407c05447a5ce8e0cf035421111856511dc1075da75d9da32f8f013940c631215a62f3133860b35225bda405230b94a6b097c865  zoneminder.initd
 9689fea3527f35dc0758a20b88648207e6ca2d7e7fc0b73e72e1c5865ecbd63537310178ccc587efcd8275003919734c89bff68b61ecee046ffcab3c3f535219  zoneminder-cmake-0001.patch
 5603af75209114dca2533f8acde33b50b67a71786c51c5468383a3bdb28fe3e27b422b58b0374b411b945681ff59714d33a95c1e9148ec40a2c477a4b25fecef  git-archive-all.sh"
