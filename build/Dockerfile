@@ -37,26 +37,30 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 RUN adduser -D $buildusername
 RUN addgroup $buildusername abuild
 
-USER $buildusername
 COPY abuild/*.rsa.pub /etc/apk/keys/.
 
+# copy all apks to build
+#
 COPY apks/ /home/$buildusername/
-
 # copy abuild rsa keys 
 # you need to create your own!!!
 # read the .abuild/readme for more information
 #
-COPY abuild /home/$buildusername/.abuild/
-
-COPY buildall.sh /home/$buildusername/.
-RUN chmod u+x /home/$buildusername/buildall.sh
-
-COPY lftp /home/$buildusername/.lftp
-COPY bin /home/$buildusername/bin
-COPY bashrc /home/$buildusername/.bashrc
+COPY --chown=$buildusername:$buildusername abuild /home/$buildusername/.abuild/
+# 
+# copy lfp bookmarks (for upload)
+#
+COPY --chown=$buildusername:$buildusername lftp /home/$buildusername/.lftp
+#
+# copy helper scripts for building / uploading
+#
+COPY --chown=$buildusername:$buildusername bin /home/$buildusername/bin
+# include bin dir in $PATH
+COPY --chown=$buildusername:$buildusername bashrc /home/$buildusername/.bashrc
 
 LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zoneminder" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
 
 #ENTRYPOINT ["/entrypoint.sh"]
+USER $buildusername
 WORKDIR /home/$buildusername
 ENTRYPOINT ["/bin/bash"]
