@@ -12,7 +12,7 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
     && apk add --no-cache \
  alpine-sdk perl-dev perl-utils git-perl perl-git perl-error perl libbz2 \
  bzip2-dev gzip zip lftp \
- libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev \
+ libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev expat-dev \ 
  ffmpeg-dev x264-dev pcre-dev libgcrypt-dev vlc-dev libvncserver-dev \
  libexecinfo-dev
 #
@@ -31,7 +31,6 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 #        perl-test2-suite perl-test-warn perl-test-pod perl-test-mockobject \
 #        perl-test-class perl-test-leaktrace \
 #    && apk add --no-cache --virtual build-deps \
-# make gcc musl-dev perl-dev expat-dev \
 #    && cpan install Class::Std::F+ast IO::Socket::Multicast \
 #    && cpan -f install SOAP::WSDL \
 # perl-test-pod-content perl-xml-libxml perl-cgi perl-test-mockobject
@@ -60,6 +59,7 @@ COPY --chown=builder:builder buildall.sh /home/builder/.
 RUN chmod u+x /home/builder/buildall.sh
 
 COPY --chown=builder:builder lftpbookmarks /home/builder/.lftp/bookmarks
+COPY --chown=builder:builder lftprc /home/builder/.lftp/rc
 
 
 #COPY entrypoint.sh /entrypoint.sh
