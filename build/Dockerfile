@@ -58,7 +58,7 @@ COPY --chown=$buildusername:$buildusername bin /home/$buildusername/bin
 # include bin dir in $PATH
 COPY --chown=$buildusername:$buildusername bashrc /home/$buildusername/.bashrc
 
-LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zoneminder" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zmbuild" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
 
 #ENTRYPOINT ["/entrypoint.sh"]
 USER $buildusername

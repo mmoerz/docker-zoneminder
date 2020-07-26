@@ -16,12 +16,8 @@ services:
         build: zm-base
         depends_on:
             - database
-        environment:
-            - ZM_DB_HOST=zm.db
-            - ZM_DB_PORT=3306
-            - ZM_DB_NAME=zoneminder
-            - ZM_DB_USER=zoneminder
-            - ZM_DB_PASS=VozHfizmy9TBQ4WVyvuBChklicRyiuch2JxjzExN
+        env_file:
+            - ./zoneminder.env
         volumes:
             - ./config/zoneminder:/config
         links:
