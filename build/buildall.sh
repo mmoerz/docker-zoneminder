@@ -10,6 +10,7 @@ perl-xml-filter-buffertext
 perl-xml-sax-writer
 perl-test-xml
 perl-soap-wsdl
+zoneminder
 "
 
 for DIR in $ORDER_TO_BUILD
