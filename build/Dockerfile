@@ -23,7 +23,6 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 #        perl-xml-sax-base perl-xml-namespacesupport perl-path-tiny \
 #        perl-ffi-checklib perl-file-chdir perl-term-size@edgetest perl-xml-parser \
 #        perl-alien-libxml2 perl-devel-hide perl-mime-charset \
-#        perl-io-socket-ssl \
 #        perl-doc \
 #        perl-test2-suite perl-test-warn perl-test-pod perl-test-mockobject \
 #        perl-test-class perl-test-leaktrace \
@@ -59,6 +58,7 @@ COPY .abuild/builder*.rsa.pub /etc/apk/keys/.
 COPY --chown=builder:builder .abuild /home/builder/.abuild/
 
 COPY --chown=builder:builder buildall.sh /home/builder/.
+RUN chmod u+x /home/builder/buildall.sh
 
 
 

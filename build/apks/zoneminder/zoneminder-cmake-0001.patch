@@ -1,0 +1,10 @@
+--- zoneminder-orig/CMakeLists.txt
++++ zoneminder-20200726/CMakeLists.txt
+@@ -281,6 +281,7 @@
+         list(APPEND ZM_BIN_LIBS "-lexecinfo")
+     endif (EXECINFO_LIBRARY)
+   endif (NOT HAVE_DECL_BACKTRACE)
++  set(CMAKE_REQUIRED_LIBRARIES "execinfo")
+   check_function_exists("backtrace_symbols" HAVE_DECL_BACKTRACE_SYMBOLS)
+ endif (HAVE_EXECINFO_H)
+ check_include_file("ucontext.h" HAVE_UCONTEXT_H)
