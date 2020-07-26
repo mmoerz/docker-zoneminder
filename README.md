@@ -27,11 +27,10 @@ Following command builds the docker image for building the necessary alpine pack
 
 ``./build.sh``
 
+For building the .apk's you will need your own keypair (public/private) for abuild. Place them into build/abuild, they will get copied into the docker image via the Dockerfile.
 Afterwards run an interactive session on the container and execute:
 
 ``build-all``
 
 This will result in creating a repository structure for alpine under 'packages'. Those then can be used to install zoneminder on the current rolling release of alpine 13.2 (at the time of writing). 
 
-
-And then push to the registry.
