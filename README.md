@@ -1,18 +1,18 @@
 # docker-zoneminder
 
-[![Project Status: Abandoned – Initial development has started, but there has not yet been a stable, usable release; the project has been abandoned and the author(s) do not intend on continuing development.](http://www.repostatus.org/badges/latest/abandoned.svg)](http://www.repostatus.org/#abandoned)
+[![Project Status: Work in Progress – Initial development has started, but there has not yet been a stable, usable release; the project has been restarted and the developer intends to finish it.](https://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 
 [ZoneMinder](https://www.zoneminder.com/) ([github](https://github.com/ZoneMinder/zoneminder)) running in a Docker container without a bundled DB.
 
-This was forked from [pschmitt/docker-zoneminder](https://github.com/pschmitt/docker-zoneminder). His was the only example I could find of a somewhat sane dockerized ZoneMinder install; all I've done is try to get it running under a modern Alpine version.
+This was initialy forked from [pschmitt/docker-zoneminder](https://github.com/pschmitt/docker-zoneminder) by [jantman/docker-zoneminder](https://github.com/jantman/docker-zoneminder). I'm trying to get it working with a modern alpine Linux version.
 
-This image uses supervisord to manage multiple processes. I know, it's ugly and un-Docker-like. But it's how ZoneMinder, a Perl application originally released in 2002, needs to run. There's the ZoneMinder Perl daemon itself (which also spawns other processes) and php-fpm and lighttpd for the web UI. At least, unlike ZoneMinder's [official Dockerfiles](https://github.com/ZoneMinder/zmdockerfiles), this image isn't based on CentOS or Ubuntu and doesn't include MySQL/MariaDB running in the same container.
+Currently this repository provides a way to build zoneminder on a modern alpine Linux version and provides a way to create a docker image based on those packages. However this is completely untested and might fail utterly (so you have been warned).
 
 For a quick overview of why it's like this, see the [ZoneMinder Components Documentation](http://zoneminder.readthedocs.io/en/stable/userguide/components.html).
 
 # CURRENT STATUS
 
-__ABANDONED.__
+__Work in Progress.__
 
 I've finally gotten streaming to work in this image, and (as far as I can tell) the image to be fully-functional. That required switching from lighttpd to Apache httpd, and I'm still not entirely sure why it wasn't working under lighttpd. So far, in the past week, I've spent four afternoons/evenings working on this, and I still don't have what I'd call a stable ZoneMinder install. Some issues:
 
