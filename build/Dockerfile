@@ -41,7 +41,7 @@ COPY abuild/*.rsa.pub /etc/apk/keys/.
 
 # copy all apks to build
 #
-COPY apks/ /home/$buildusername/
+COPY --chown=$buildusername:$buildusername apks/ /home/$buildusername/
 # copy abuild rsa keys 
 # you need to create your own!!!
 # read the .abuild/readme for more information
