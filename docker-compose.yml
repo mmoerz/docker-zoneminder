@@ -13,7 +13,7 @@ services:
             - ./data/mysql:/var/lib/mysql
 
     zoneminder:
-        image: pschmitt/zoneminder
+        build: zm-base
         depends_on:
             - database
         environment:

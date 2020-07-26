@@ -9,8 +9,11 @@ build_date=$(date -Iseconds)
 tagdate=$(date +%Y_%m_%d__%H%M)
 gituser=$(git config --global user.name)
 
-docker build $NOCACHE --build-arg "version=$version" \
-  --build-arg "build_date=$build_date" -t $gituser/zoneminder:${tagdate} build
+docker build $NOCACHE \
+  --build-arg "version=$version" \
+  --build-arg "build_date=$build_date" \
+  --build-arg "buildusername=$gituser" \
+  -t $gituser/zoneminder:${tagdate} build
 docker tag $gituser/zoneminder:${tagdate} $gituser/zoneminder:latest
 
 echo -en "building finished\n\tVersion: $version\n"

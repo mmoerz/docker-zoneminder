@@ -6,6 +6,7 @@ MAINTAINER Michael Moerz <michael@moerz.co.at>
 
 ARG version
 ARG build_date
+ARG buildusername
 
 RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
     && apk update \
@@ -33,27 +34,29 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
 #    && apk add --no-cache --virtual build-deps \
 
 # user for building the packages
-RUN adduser -D builder
-RUN addgroup builder abuild
+RUN adduser -D $buildusername
+RUN addgroup $buildusername abuild
 
-COPY --chown=builder:builder apks/ /home/builder/
+USER $buildusername
+COPY abuild/*.rsa.pub /etc/apk/keys/.
+
+COPY apks/ /home/$buildusername/
 
 # copy abuild rsa keys 
 # you need to create your own!!!
 # read the .abuild/readme for more information
 #
-COPY .abuild/builder*.rsa.pub /etc/apk/keys/.
-COPY --chown=builder:builder .abuild /home/builder/.abuild/
+COPY abuild /home/$buildusername/.abuild/
 
-COPY --chown=builder:builder buildall.sh /home/builder/.
-RUN chmod u+x /home/builder/buildall.sh
+COPY buildall.sh /home/$buildusername/.
+RUN chmod u+x /home/$buildusername/buildall.sh
 
-COPY --chown=builder:builder lftp /home/builder/.lftp
-COPY --chown=builder:builder bin /home/builder/bin
-COPY --chown=builder:builder bashrc /home/builder/.bashrc
+COPY lftp /home/$buildusername/.lftp
+COPY bin /home/$buildusername/bin
+COPY bashrc /home/$buildusername/.bashrc
 
 LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zoneminder" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
 
 #ENTRYPOINT ["/entrypoint.sh"]
-USER builder
+WORKDIR /home/$buildusername
 ENTRYPOINT ["/bin/bash"]
