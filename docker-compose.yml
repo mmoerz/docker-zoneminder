@@ -4,11 +4,8 @@ services:
     database:
         image: mariadb
         container_name: zmdb
-        environment:
-            - MYSQL_DATABASE=zoneminder
-            - MYSQL_USER=zoneminder
-            - MYSQL_PASSWORD=VozHfizmy9TBQ4WVyvuBChklicRyiuch2JxjzExN
-            - MYSQL_RANDOM_ROOT_PASSWORD=true
+        env_file:
+            - database.env
         volumes:
             - ./data/mysql:/var/lib/mysql
 
