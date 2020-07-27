@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-# MAINTAINER Philipp Schmitt <philipp@schmitt.co>
+#MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 #MAINTAINER Jason Antman <jason@jasonantman.com>
 MAINTAINER Michael Moerz <michael@moerz.co.at>
 
@@ -16,15 +16,14 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
     && apk update \
     && apk add --no-cache \
         apache2 php7-apache2 php7-fpm php7-pdo php7-pdo_mysql php7-ctype \
-        supervisor \
+        supervisor mariadb-client \
         zoneminder
 
 COPY ressources /root/build/
 
-
-#COPY entrypoint.sh /entrypoint.sh
-#RUN chmod 0755 /tmp/build/install.sh /entrypoint.sh
-#RUN /tmp/build/install.sh
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod 0755 /root/build/install.sh /entrypoint.sh
+RUN /root/build/install.sh
 
 EXPOSE 80
 
