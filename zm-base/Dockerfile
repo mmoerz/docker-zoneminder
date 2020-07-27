@@ -17,7 +17,9 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
     && apk add --no-cache \
         apache2 php7-apache2 php7-fpm php7-pdo php7-pdo_mysql php7-ctype \
         supervisor mariadb-client \
-        zoneminder
+        zoneminder \
+        perl-number-bytes-human
+# perl package that fixes a missing dep in the 1.32.5 zoneminder package
 
 COPY ressources /root/build/
 
@@ -26,6 +28,7 @@ RUN chmod 0755 /root/build/install.sh /entrypoint.sh
 RUN /root/build/install.sh
 
 EXPOSE 80
+EXPOSE 443
 
 ENV ZM_DB_TYPE=mysql ZM_DB_HOST=zm.db \
     ZM_DB_PORT=3306 ZM_DB_NAME=zoneminder ZM_DB_USER=zoneminder \
@@ -33,6 +36,6 @@ ENV ZM_DB_TYPE=mysql ZM_DB_HOST=zm.db \
 
 LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zmbase" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
 
-#ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/bin/bash"]
 

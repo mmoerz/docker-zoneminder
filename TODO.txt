@@ -1,0 +1,1 @@
++ fix ZoneMinder is not installed properly: php's date.timezone is not set to a valid timezone
