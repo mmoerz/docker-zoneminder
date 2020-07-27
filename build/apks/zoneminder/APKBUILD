@@ -18,7 +18,7 @@ depends="bash linux-headers
          perl-dbi perl-device-serialport perl-libwww
          perl-lwp-protocol-https perl-mailtools perl-mime-lite
          perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap
-         perl-time-hires 
+         perl-time-hires perl-number-bytes-human 
          $_php $_php-apcu $_php-ctype $_php-gd $_php-json
          $_php-pdo_mysql $_php-session $_php-sockets 
          polkit vlc x264 gzip
