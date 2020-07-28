@@ -25,6 +25,23 @@ services:
             - 80:80
             - 443:443
 
+     frontend:
+        build: zm-base
+        depends_on:
+            - database
+            - zoneminder
+        env_file:
+            - ./zoneminder.env
+        volumes:
+            - /vlz:/var/lib/zoneminder
+        links:
+            - database:zm.db
+            - zoneminder:zm
+        ports:
+            - 80:80
+            - 443:443
+        
+
 #    frontend:
 #        image: nginx:stable-alpine
 #        depends_on:
