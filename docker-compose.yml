@@ -17,6 +17,8 @@ services:
             - ./zoneminder.env
         volumes:
             - ./config/zoneminder:/config
+            - ./log:/var/log/zoneminder
+            
         links:
             - database:zm.db
         ports:
