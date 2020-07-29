@@ -20,6 +20,7 @@ sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
 install -d -o apache -g apache /var/run/zoneminder
 install -d -o apache -g apache /var/lib/zoneminder
+install -d -o apache -g apache /var/lib/zoneminder/events
 install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/images
 install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/events
 chown -R apache:apache "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
@@ -34,16 +35,9 @@ then
     exit 3
 fi
 
-# Init DB
-DB_INITALIZED="$(mysql -u $ZM_DB_USER --password=$ZM_DB_PASS -h $ZM_DB_HOST $ZM_DB_NAME -e 'show tables;')"
-if [[ -z "$DB_INITALIZED" ]]
-then
-    echo -n "Database has not been initialized... "
-    sed -i 's/`zm`/'"$ZM_DB_NAME"'/g' /usr/share/zoneminder/db/zm_create.sql
-    # /etc/init.d/zoneminder setup
-    mysql -u "$ZM_DB_USER" -p"$ZM_DB_PASS" -h "$ZM_DB_HOST" -P "$ZM_DB_PORT" < "/usr/share/zoneminder/db/zm_create.sql" || exit 1
-    echo 'Done!'
-fi
-
 # Start server
-exec supervisord
+/usr/sbin/php-fpm7 \
+  -F --fpm-config /etc/php7/php-fpm.conf \
+  --pid /run/php-fpm.pid
+
+exec /usr/sbin/httpd -DFOREGROUND -k start 
