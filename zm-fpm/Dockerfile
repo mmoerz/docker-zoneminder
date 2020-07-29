@@ -21,7 +21,7 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
         perl-number-bytes-human
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
 
-COPY ressources /root/build/
+COPY resources /root/build/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /root/build/install.sh /entrypoint.sh

@@ -20,6 +20,17 @@ services:
       - ./log:/var/log/zoneminder      
     links:
       - database:zm.db
+  
+  fpm:
+    build: zm-fpm
+    depends_on:
+      - database
+      - zoneminder
+    env_file:
+      - ./zoneminder.env
+    links:
+      - database:zm.db
+      - zoneminder:zm
 
   frontend:
     build: zm-http
