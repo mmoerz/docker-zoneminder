@@ -26,6 +26,12 @@ chown -R apache:apache "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
 chown -R apache:wheel /var/log/zoneminder
 mkdir /run/apache2 && chown apache:apache /run/apache2
 
+#
+# Ugg, Ugg, I need cleanup>
+# remove the stuff that might be left behind by misbehaving daemons
+#
+rm -f /var/run/zoneminder/zmaudit.pid
+
 # Wait for DB server to come up
 # TODO
 if ! mysqladmin --wait=30 -P "$ZM_DB_PORT" -u "$ZM_DB_USER" --password="$ZM_DB_PASS" -h "$ZM_DB_HOST" ping
