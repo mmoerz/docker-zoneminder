@@ -27,8 +27,8 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /root/build/install.sh /entrypoint.sh
 RUN /root/build/install.sh
 
-#EXPOSE 80
-#EXPOSE 443
+EXPOSE 80
+EXPOSE 443
 
 ENV ZM_DB_TYPE=mysql ZM_DB_HOST=zm.db \
     ZM_DB_PORT=3306 ZM_DB_NAME=zoneminder ZM_DB_USER=zoneminder \

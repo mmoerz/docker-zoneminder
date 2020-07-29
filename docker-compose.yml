@@ -1,46 +1,41 @@
 version: '2'
 
 services:
-    database:
-        image: mariadb
-        container_name: zmdb
-        env_file:
-            - database.env
-        volumes:
-            - ./data/mysql:/var/lib/mysql
+  database:
+    image: mariadb
+    container_name: zmdb
+    env_file:
+      - database.env
+    volumes:
+      - ./data/mysql:/var/lib/mysql
 
-    zoneminder:
-        build: zm-base
-        depends_on:
-            - database
-        env_file:
-            - ./zoneminder.env
-        volumes:
-            - ./config/zoneminder:/config
-            - ./log:/var/log/zoneminder
-            
-        links:
-            - database:zm.db
-        ports:
-            - 80:80
-            - 443:443
+  zoneminder:
+    build: zm-base
+    depends_on:
+      - database
+    env_file:
+      - ./zoneminder.env
+    volumes:
+      - ./config/zoneminder:/config
+      - ./log:/var/log/zoneminder      
+    links:
+      - database:zm.db
 
-     frontend:
-        build: zm-base
-        depends_on:
-            - database
-            - zoneminder
-        env_file:
-            - ./zoneminder.env
-        volumes:
-            - /vlz:/var/lib/zoneminder
-        links:
-            - database:zm.db
-            - zoneminder:zm
-        ports:
-            - 80:80
-            - 443:443
-        
+  frontend:
+    build: zm-http
+    depends_on:
+      - database
+      - zoneminder
+    env_file:
+      - ./zoneminder.env
+    volumes:
+      - /vlz:/var/lib/zoneminder
+    links:
+      - database:zm.db
+      - zoneminder:zm
+    ports:
+      - 80:80
+      - 443:443
 
 #    frontend:
 #        image: nginx:stable-alpine
