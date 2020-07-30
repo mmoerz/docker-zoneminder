@@ -1,8 +1,8 @@
 #!/usr/bin/env ash
 
-APACHE_USER=apache
-APACHE_GROUP=www-data
-APACHE_PERMS=$APACHE_USER:$APACHE_GROUP
+WWW_USER=nginx
+WWW_GROUP=www
+WWW_PERMS=$WWW_USER:$WWW_GROUP
 
 # Edit config file
 ZM_CONFIG=/etc/zm.conf
@@ -12,6 +12,8 @@ ZM_DB_PORT=${ZM_DB_PORT:-3306}
 ZM_DB_NAME=${ZM_DB_NAME:-zoneminder}
 ZM_DB_USER=${ZM_DB_USER:-zoneminder}
 ZM_DB_PASS=${ZM_DB_PASS:-zoneminder}
+
+NGINX_CONFIG=/etc/nginx/conf.d/zoneminder.conf
 SERVERNAME=${SERVERNAME:-localhost}
 
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
@@ -21,25 +23,21 @@ sed -i "s/\(ZM_DB_NAME\)=.*/\1=$ZM_DB_NAME/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_USER\)=.*/\1=$ZM_DB_USER/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 
-echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
+sed -i "s/server_name\s*\(.*\)/\1=$SERVERNAME/" "$NGINX_CONFIG"
 
+# fixes that should be unecessary once a correcte zoneminder.apk is used>
 DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
-DIRS="$DIRS /var/lib/zoneminder/images"
+DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
 DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/images"
 DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/events"
 for DIR in $DIRS; do
   [ ! -d $DIR ] && mkdir -p $DIR
-  chown $APACHE_PERMS $DIR
+  chown -R $WWW_PERMS $DIR
 done
 
-# install -d -o apache -g apache /var/run/zoneminder
-#install -d -o apache -g apache /var/lib/zoneminder
-#install -d -o apache -g apache /var/lib/zoneminder/events
-#install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/images
-#install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/events
-chown -R apache:apache "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
-chown -R apache:wheel /var/log/zoneminder
-[ ! -d "/run/apache2" ] && mkdir /run/apache2 && chown apache:apache /run/apache2
+chown -R nginx:www-data "$ZM_CONFIG" /var/run/zoneminder
+chown -R nginx:wheel /var/log/zoneminder
+# [ ! -d "/run/apache2" ] && mkdir /run/apache2 && chown nginx:nginx /run/nginx
 
 # Wait for DB server to come up
 # TODO
@@ -48,10 +46,5 @@ then
     echo "Could not reach MySQL server in time... Abort." >&2
     exit 3
 fi
-
-# Start server
-#/usr/sbin/php-fpm7 \
-#  -F --fpm-config /etc/php7/php-fpm.conf \
-#  --pid /run/php-fpm.pid &
 
 exec /usr/sbin/httpd -DFOREGROUND -k start 

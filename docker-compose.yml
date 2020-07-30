@@ -21,7 +21,7 @@ services:
     links:
       - database:zm.db
   
-  fpm:
+  phpfpm:
     build: zm-fpm
     depends_on:
       - database
@@ -45,6 +45,7 @@ services:
     links:
       - database:zm.db
       - zoneminder:zm
+      - phpfpm:zm.phpfpm
     ports:
       - 80:80
       - 443:443

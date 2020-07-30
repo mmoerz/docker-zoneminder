@@ -1,8 +1,9 @@
 #!/usr/bin/env ash
 
-APACHE_USER=apache
-APACHE_GROUP=www-data
-APACHE_PERMS=$APACHE_USER:$APACHE_GROUP
+WWW_USER=nginx
+WWW_GROUP=www
+WWW_PERMS=$WWW_USER:$WWW_GROUP
+WEB_SERVER_PERSMS=$WWW_USER:$WWW_USER
 
 # Edit config file
 ZM_CONFIG=/etc/zm.conf
@@ -24,12 +25,12 @@ sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
 
 DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
-DIRS="$DIRS /var/lib/zoneminder/images"
+DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
 DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/images"
 DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/events"
 for DIR in $DIRS; do
   [ ! -d $DIR ] && mkdir -p $DIR
-  chown $APACHE_PERMS $DIR
+  chown $WWW_PERMS $DIR
 done
 
 # install -d -o apache -g apache /var/run/zoneminder
@@ -37,7 +38,7 @@ done
 #install -d -o apache -g apache /var/lib/zoneminder/events
 #install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/images
 #install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/events
-chown -R apache:apache "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
+chown -R $WEB_SERVER_PERSMS "$ZM_CONFIG" /var/run/zoneminder
 chown -R apache:wheel /var/log/zoneminder
 [ ! -d "/run/apache2" ] && mkdir /run/apache2 && chown apache:apache /run/apache2
 
