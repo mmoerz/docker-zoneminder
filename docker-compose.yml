@@ -40,7 +40,8 @@ services:
     env_file:
       - ./zoneminder.env
     volumes:
-      - /vlz:/var/lib/zoneminder
+      - ./vlz:/var/lib/zoneminder
+      - ./log/apache:/var/log/apache
     links:
       - database:zm.db
       - zoneminder:zm

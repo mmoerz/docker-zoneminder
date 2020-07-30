@@ -50,8 +50,8 @@ then
 fi
 
 # Start server
-/usr/sbin/php-fpm7 \
-  -F --fpm-config /etc/php7/php-fpm.conf \
-  --pid /run/php-fpm.pid &
+#/usr/sbin/php-fpm7 \
+#  -F --fpm-config /etc/php7/php-fpm.conf \
+#  --pid /run/php-fpm.pid &
 
 exec /usr/sbin/httpd -DFOREGROUND -k start 
