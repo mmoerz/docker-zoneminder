@@ -15,6 +15,7 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
     && echo "@mmoerz http://natoka.de/alpine/packages/mmoerz/" >> /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
+        nginx \ 
         php7-fpm php7-pdo php7-pdo_mysql php7-ctype \
         mariadb-client \
         zoneminder \
