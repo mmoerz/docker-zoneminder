@@ -28,9 +28,13 @@ services:
       - zoneminder
     env_file:
       - ./zoneminder.env
+    volumes:
+      - ./cache:/var/cache/zoneminder
     links:
       - database:zm.db
       - zoneminder:zm
+    ports:
+      - 9001:9000
 
   frontend:
     build: zm-http
@@ -42,6 +46,7 @@ services:
     volumes:
       - ./vlz:/var/lib/zoneminder
       - ./log/apache:/var/log/apache
+      - ./cache:/var/cache/zoneminder
     links:
       - database:zm.db
       - zoneminder:zm

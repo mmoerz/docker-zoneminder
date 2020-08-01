@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
 
 WWW_USER=nginx
-WWW_GROUP=www
+WWW_GROUP=nginx
 WWW_PERMS=$WWW_USER:$WWW_GROUP
 
 # Edit config file
@@ -13,7 +13,9 @@ ZM_DB_NAME=${ZM_DB_NAME:-zoneminder}
 ZM_DB_USER=${ZM_DB_USER:-zoneminder}
 ZM_DB_PASS=${ZM_DB_PASS:-zoneminder}
 
-NGINX_CONFIG=/etc/nginx/conf.d/zoneminder.conf
+NGINX_CONFIG=/etc/nginx/nginx.conf
+NGINX_ZM_CONFIG=/etc/nginx/conf.d/zoneminder.conf
+NGINX_WORKER=${NGINX_WORKER:-1}
 SERVERNAME=${SERVERNAME:-localhost}
 
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
@@ -23,7 +25,8 @@ sed -i "s/\(ZM_DB_NAME\)=.*/\1=$ZM_DB_NAME/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_USER\)=.*/\1=$ZM_DB_USER/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 
-sed -i "s/server_name\s*\(.*\)/\1=$SERVERNAME/" "$NGINX_CONFIG"
+sed -i "s/\(worker_processes\s\+\).*/\1$NGINX_WORKER;/" "$NGINX_CONFIG"
+sed -i "s/\(server_name\s\+\).*/\1$SERVERNAME;/" "$NGINX_ZM_CONFIG"
 
 # fixes that should be unecessary once a correcte zoneminder.apk is used>
 DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
@@ -35,8 +38,8 @@ for DIR in $DIRS; do
   chown -R $WWW_PERMS $DIR
 done
 
-chown -R nginx:www-data "$ZM_CONFIG" /var/run/zoneminder
-chown -R nginx:wheel /var/log/zoneminder
+chown -R nginx:nginx "$ZM_CONFIG" /var/run/zoneminder
+#chown -R nginx:wheel /var/log/zoneminder
 # [ ! -d "/run/apache2" ] && mkdir /run/apache2 && chown nginx:nginx /run/nginx
 
 # Wait for DB server to come up
@@ -47,4 +50,4 @@ then
     exit 3
 fi
 
-exec /usr/sbin/httpd -DFOREGROUND -k start 
+exec /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
