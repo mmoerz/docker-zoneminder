@@ -1,0 +1,81 @@
+# Contributor:
+# Maintainer:
+pkgname="libjwt"
+pkgver="1.11.0"
+pkgrel=0
+pkgdesc="libjwt is a C library for en- and decoding of JSON Web Tokens (JWT)"
+url="https://github.com/benmcollins/libjwt"
+arch="all"
+license="Mozilla Public License Version 2.0"
+depends="jansson openssl"
+makedepends="automake autoconf libtool cmake jansson-dev openssl-dev doxygen check pkgconf"
+subpackages="$pkgname-dev $pkgname-doc"
+source="$pkgname-$pkgver.tar.gz::https://github.com/benmcollins/libjwt/archive/v$pkgver.tar.gz"
+#
+#http://natoka.de/archive/zoneminder/$pkgname-$pkgver.tar.gz
+#	"
+builddir="$srcdir/$pkgname-$pkgver"
+
+_giturl="https://github.com/ZoneMinder/zoneminder.git"
+_upload="natokade:/natoka/archive/$pkgname/"
+
+snapshot() {
+	local _date=$(date +%Y%m%d)
+	local _pkg=$pkgname-$_date.tar.gz
+	mkdir -p "$srcdir"
+	cd "$srcdir"
+	msg "Creating snapshot: $_pkg"
+	rm -rf ${_giturl##*/}
+	git clone --depth=1 --recurse-submodules $_giturl
+	msg "srcdir: $srcdir, pkgname: $pkgname"
+	cd $pkgname && \
+	   ../../git-archive-all.sh --format tar.gz \
+           --prefix $pkgname-$_date/ ../$_pkg
+	msg "Uploading to $_upload"
+	cd "$srcdir"
+	lftp -c "open natokade; \
+                 put -O /natoka/archive/zoneminder/ zoneminder-20200726.tar.gz"
+	msg "Updating checksums"
+	cd "$startdir"
+	sed -i -e "s/^pkgver=.*/pkgver=$_date/" \
+		APKBUILD
+	abuild checksum
+}
+
+prepare() {
+  default_prepare
+	touch README
+  libtoolize
+	autoreconf -fi
+}
+
+build() {
+  msg "Building Zoneminder"
+	if [ "$CBUILD" != "$CHOST" ]; then
+		CMAKE_CROSSOPTS="-DCMAKE_SYSTEM_NAME=Linux -DCMAKE_HOST_SYSTEM_NAME=Linux"
+	fi
+  cd "$builddir"
+  ./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--disable-static
+	make
+}
+
+check() {
+  make check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+
+  for file in "$builddir"/html/* ; do
+    bname=`basename $file`
+    install -m755 -D "$file" \
+      "$pkgdir"/usr/share/doc/$pkgname/"$bname"
+  done
+
+}
+
+sha512sums="8eaea567ad2a71bbf7322975f3f376b25e92277ae2deed068a1aed35a189f7b485eac7f9b2faac6f0706ba36c283867f31e38ae1cb951a1eb98ca3ecbeba8401  libjwt-1.11.0.tar.gz"

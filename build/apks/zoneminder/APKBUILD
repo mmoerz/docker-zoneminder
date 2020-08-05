@@ -11,9 +11,10 @@ arch="all !s390x !mips !mips64" # vlc missing on excluded arches
 license="GPL-2.0-or-later"
 _php=php7
 depends="bash linux-headers
-         bzip2 curl ffmpeg gnutls libgcrypt
+         bzip2 curl ffmpeg openssl libgcrypt
          libvncserver libexecinfo libjpeg-turbo
          mariadb-connector-c pcre 
+         libjwt
          perl perl-archive-zip perl-date-manip perl-dbd-mysql
          perl-dbi perl-device-serialport perl-libwww
          perl-lwp-protocol-https perl-mailtools perl-mime-lite
@@ -28,9 +29,10 @@ depends="bash linux-headers
 #
 # perl-device-serialport ?? for real?
 makedepends="git cmake linux-headers
-             bzip2-dev curl-dev ffmpeg-dev gnutls-dev libgcrypt-dev
+             bzip2-dev curl-dev ffmpeg-dev openssl-dev libgcrypt-dev
              libvncserver-dev libexecinfo-dev libjpeg-turbo-dev 
              mariadb-connector-c-dev pcre-dev 
+             libjwt-dev
              perl-dev perl-soap-wsdl
              ${_php}-cli
              polkit-dev vlc-dev x264-dev gzip zip"
@@ -51,7 +53,6 @@ source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminde
 
 _giturl="https://github.com/ZoneMinder/zoneminder.git"
 _upload="natokade:/natoka/archive/$pkgname/"
-builddir="$srcdir/$pkgname-$_date/linux_lib/libcrystalhd"
 
 snapshot() {
 	local _date=$(date +%Y%m%d)

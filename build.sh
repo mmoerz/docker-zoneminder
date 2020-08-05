@@ -17,3 +17,5 @@ docker build $NOCACHE \
 docker tag $gituser/zoneminder:${tagdate} $gituser/zoneminder:latest
 
 echo -en "building finished\n\tVersion: $version\n"
+
+docker run -it $gituser/zoneminder:latest

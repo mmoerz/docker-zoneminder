@@ -10,7 +10,9 @@ pkgdesc="SOAP with WSDL support"
 url="https://metacpan.org/release/SOAP-WSDL/"
 arch="noarch"
 license="GPL-1.0-or-later OR Artistic-1.0-Perl"
-depends="perl perl-module-build perl-class-std-fast perl-template-toolkit perl-xml-parser perl-libwww perl-class-load perl-uri perl-term-readkey perl-timedate"
+depends="perl perl-module-build perl-class-std-fast perl-template-toolkit
+         perl-xml-parser perl-libwww perl-class-load perl-uri 
+         perl-term-readkey perl-timedate"
 makedepends="perl-dev perl-doc"
 checkdepends="perl-test-pod-content perl-xml-libxml perl-cgi perl-test-mockobject perl-test-warn perl-moose perl-test-cpan-meta perl-io-stringy perl-test-xml perl-test-class"
 subpackages="$pkgname-doc"

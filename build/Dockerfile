@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.11
 
 # MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 # MAINTAINER Jason Antman <jason@jasonantman.com>
@@ -8,14 +8,23 @@ ARG version
 ARG build_date
 ARG buildusername
 
-RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk update \
+#RUN apk update \
+#RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
+#    && apk update \
+RUN apk update \
     && apk add --no-cache \
- bash alpine-sdk perl-dev perl-utils git-perl perl-git perl-error perl libbz2 \
+ bash alpine-sdk cmake apkbuild-cpan \
+ perl-dev perl-utils git-perl perl-git perl-error perl libbz2 \
  bzip2-dev gzip zip lftp \
+ polkit vlc x264 gzip \
  libjpeg-turbo-dev curl-dev openssl-dbg mariadb-dev expat-dev \ 
  ffmpeg-dev x264-dev pcre-dev libgcrypt-dev vlc-dev libvncserver-dev \
- libexecinfo-dev polkit-dev
+ libexecinfo-dev polkit-dev \
+ perl perl-archive-zip perl-date-manip perl-dbd-mysql \
+         perl-dbi perl-device-serialport perl-libwww \
+         perl-lwp-protocol-https perl-mailtools perl-mime-lite \
+        perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap 
+
 #
 # mysql-client \
 #        apache2 php7-apache2 php7-fpm \
@@ -58,9 +67,9 @@ COPY --chown=$buildusername:$buildusername bin /home/$buildusername/bin
 # include bin dir in $PATH
 COPY --chown=$buildusername:$buildusername bashrc /home/$buildusername/.bashrc
 
-LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zoneminder-build" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date=$build_date org.label-schema.vcs-url="https://github.com/mmoerz/docker-zoneminder/build" org.label-schema.vcs-ref=$version org.label-schema.schema-version="1.0"
 
 #ENTRYPOINT ["/entrypoint.sh"]
 USER $buildusername
 WORKDIR /home/$buildusername
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
