@@ -23,7 +23,10 @@ depends="bash linux-headers
          $_php $_php-apcu $_php-ctype $_php-gd $_php-json
          $_php-pdo_mysql $_php-session $_php-sockets 
          polkit vlc x264 gzip
-         procps sudo"
+         procps sudo
+         nginx"
+www-user=nginx
+www-grp=nginx
 # libdata-uuid-perl data-entropy-perl libcrypt-eksblowfish-perl
 # libjs-jquery libjs-mootools
 #
@@ -129,8 +132,8 @@ package() {
   # but needed
   mkdir -p "$pkgdir"/var/lib/zoneminder/events
   mkdir -p "$pkgdir"/var/lib/zoneminder/images
-  chown apache:www-data "$pkgdir"/var/lib/zoneminder/events
-  chown apache:www-data "$pkgdir"/var/lib/zoneminder/images
+  chown $www-user:$www-grp "$pkgdir"/var/lib/zoneminder/events
+  chown $www-user:$www-grp "$pkgdir"/var/lib/zoneminder/images
 }
 sha512sums="ab756e037df12a3b76a915ffc6f7c766c1d47bb72f2763653a2886dc4e715e1bd4fdc5a1d32f856147d786e20fda1e6bad557a3a8da8550de1a4d645d7f76551  zoneminder-20200726.tar.gz
 ae02daacc41e2b32ca0da5cf407c05447a5ce8e0cf035421111856511dc1075da75d9da32f8f013940c631215a62f3133860b35225bda405230b94a6b097c865  zoneminder.initd

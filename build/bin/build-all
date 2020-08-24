@@ -9,6 +9,8 @@ perl-xml-semanticdiff
 perl-xml-filter-buffertext
 perl-xml-sax-writer
 perl-test-xml
+perl-mro-compat
+perl-test-class
 perl-soap-wsdl
 perl-number-bytes-human
 libjwt

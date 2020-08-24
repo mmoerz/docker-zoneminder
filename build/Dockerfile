@@ -13,7 +13,7 @@ ARG buildusername
 #    && apk update \
 RUN apk update \
     && apk add --no-cache \
- bash alpine-sdk cmake apkbuild-cpan \
+ bash alpine-sdk automake autoconf libtool pkgconf cmake apkbuild-cpan \
  perl-dev perl-utils git-perl perl-git perl-error perl libbz2 \
  bzip2-dev gzip zip lftp \
  polkit vlc x264 gzip \
@@ -23,7 +23,8 @@ RUN apk update \
  perl perl-archive-zip perl-date-manip perl-dbd-mysql \
          perl-dbi perl-device-serialport perl-libwww \
          perl-lwp-protocol-https perl-mailtools perl-mime-lite \
-        perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap 
+        perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap \
+       php7 
 
 #
 # mysql-client \
