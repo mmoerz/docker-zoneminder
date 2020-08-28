@@ -50,16 +50,14 @@ prepare() {
 }
 
 build() {
-  msg "Building Zoneminder"
-	if [ "$CBUILD" != "$CHOST" ]; then
-		CMAKE_CROSSOPTS="-DCMAKE_SYSTEM_NAME=Linux -DCMAKE_HOST_SYSTEM_NAME=Linux"
-	fi
+  msg "Building libjwt"
   cd "$builddir"
   ./configure \
-		--build=$CBUILD \
-		--host=$CHOST \
-		--prefix=/usr \
-		--disable-static
+    --build=$CBUILD \
+    --host=$CHOST \
+    --prefix=/usr \
+    --includedir=/usr/include/libjwt \
+    --disable-static
 	make
 }
 

@@ -20,13 +20,8 @@ depends="bash linux-headers
          perl-lwp-protocol-https perl-mailtools perl-mime-lite
          perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap
          perl-time-hires perl-number-bytes-human 
-         $_php $_php-apcu $_php-ctype $_php-gd $_php-json
-         $_php-pdo_mysql $_php-session $_php-sockets 
          polkit vlc x264 gzip
-         procps sudo
-         nginx"
-www_user=nginx
-www_grp=nginx
+         procps sudo"
 # libdata-uuid-perl data-entropy-perl libcrypt-eksblowfish-perl
 # libjs-jquery libjs-mootools
 #
@@ -39,10 +34,12 @@ makedepends="git cmake linux-headers
              perl-dev perl-soap-wsdl
              ${_php}-cli
              polkit-dev vlc-dev x264-dev gzip zip"
-subpackages=$pkgname-doc $pkgname-webui
+subpackages="$pkgname-doc
+$pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_ngins:noarch"
 source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
 	$pkgname.initd
 	$pkgname-cmake-0001.patch
+	$pkgname-cmake-0002.patch
 	git-archive-all.sh
 	"
 
@@ -102,7 +99,7 @@ build() {
 		-DZM_RUNDIR=/var/run/zoneminder \
 		-DZM_SOCKDIR=/var/run/zoneminder \
 		-DZM_TMPDIR=/var/lib/zoneminder/temp \
-		-DZM_WEBDIR=/usr/share/webapps/$pkgname/htdocs \
+		-DZM_WEBDIR=/usr/share/"$pkgname"-webui/htdocs \
 		. && make
 }
 
@@ -115,26 +112,47 @@ package() {
 
 	install -D -m 755 "$srcdir/$pkgname.initd" "$pkgdir/etc/init.d/$pkgname"
 	chmod 640 "$pkgdir/etc/zm.conf"
+}
 
+_webui() {
+  description="$description (webui)"
+  depends="$_php $_php-apcu $_php-ctype $_php-gd $_php-json
+           $_php-pdo_mysql $_php-session $_php-sockets"
+
+  mkdir -p "$subpkgdir"/usr/share/
+	mv "$pkgdir"/usr/share/"$pkgname"-webui \
+     "$subpkgdir"/usr/share/"$pkgname"-webui
+  
 	ln -s /var/cache/zoneminder \
-		"$pkgdir"/usr/share/webapps/zoneminder/htdocs/cache
-	install -g wheel -m 2750 -d "$pkgdir"/var/log/$pkgname
+		"$subpkgdir"/usr/share/"$pkname"-webui/htdocs/cache
+	install -g wheel -m 2750 -d "$subpkgdir"/var/log/$pkgname
 
 	# create symlinks from webapps to default http location
-	mkdir -p "$pkgdir"/var/www/localhost/htdocs \
-		"$pkgdir"/var/www/localhost/cgi-bin
-	ln -sf /usr/share/webapps/zoneminder/htdocs \
-		"$pkgdir"/var/www/localhost/htdocs/zm
-	ln -sf /usr/share/webapps/zoneminder/cgi-bin \
-		"$pkgdir"/var/www/localhost/cgi-bin/zm
-
-  # for now create directories and set permissions of directories missed
-  # but needed
-  mkdir -p "$pkgdir"/var/lib/zoneminder/events
-  mkdir -p "$pkgdir"/var/lib/zoneminder/images
-  chown $www_user:$www_grp "$pkgdir"/var/lib/zoneminder/events
-  chown $www_user:$www_grp "$pkgdir"/var/lib/zoneminder/images
+	mkdir -p "$subpkgdir"/var/www/localhost/htdocs \
+		"$subpkgdir"/var/www/localhost/cgi-bin
+	ln -sf /usr/share/"$pkgname"-webui/htdocs \
+		"$subpkgdir"/var/www/localhost/htdocs/zm
+	ln -sf /usr/share/"$pkgname"-webui/cgi-bin \
+		"$subpkgdir"/var/www/localhost/cgi-bin/zm
 }
+
+www_user=nginx
+www_grp=nginx
+_webui_nginx() {
+  description="$description (webui nginx configuration)"
+	depends="$pkgname-webui nginx"
+
+  mkdir -p "$subpkgdir"/etc/nginx/conf.d
+  # copy some config file here
+
+# for now create directories and set permissions of directories missed
+  # but needed
+  install -o $www_user -g $www_grp -m 750 \
+    -p "$subpkgdir"/var/lib/zoneminder/events
+  install -o $www_user -g $www_grp -m 750 \
+    -p "$subpkgdir"/var/lib/zoneminder/images
+}
+
 sha512sums="ab756e037df12a3b76a915ffc6f7c766c1d47bb72f2763653a2886dc4e715e1bd4fdc5a1d32f856147d786e20fda1e6bad557a3a8da8550de1a4d645d7f76551  zoneminder-20200726.tar.gz
 ae02daacc41e2b32ca0da5cf407c05447a5ce8e0cf035421111856511dc1075da75d9da32f8f013940c631215a62f3133860b35225bda405230b94a6b097c865  zoneminder.initd
 9689fea3527f35dc0758a20b88648207e6ca2d7e7fc0b73e72e1c5865ecbd63537310178ccc587efcd8275003919734c89bff68b61ecee046ffcab3c3f535219  zoneminder-cmake-0001.patch

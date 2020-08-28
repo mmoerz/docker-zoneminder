@@ -1,0 +1,11 @@
+--- zmorig/cmake/Modules/FindLibJWT.cmake	2020-08-28 23:47:48.764700127 +0200
++++ zm/cmake/Modules/FindLibJWT.cmake	2020-08-28 23:48:08.332462937 +0200
+@@ -9,7 +9,7 @@
+   )
+ 
+ find_library(LIBJWT_LIBRARY
+-  NAMES jwt-gnutls libjwt-gnutls liblibjwt-gnutls
++  NAMES jwt libjwt jwt-gnutls libjwt-gnutls liblibjwt-gnutls
+   HINTS ${PC_LIBJWT_LIBDIR} ${PC_LIBJWT_LIBRARY_DIR}
+   )
+ 

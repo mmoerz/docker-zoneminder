@@ -20,6 +20,5 @@ zoneminder
 for DIR in $ORDER_TO_BUILD
 do
   echo "$DIR"
-  cd $DIR && abuild -r
-  cd $HOME
+  cd "$HOME/$DIR" && abuild -r
 done
