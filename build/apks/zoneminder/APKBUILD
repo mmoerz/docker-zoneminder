@@ -35,7 +35,7 @@ makedepends="git cmake linux-headers
              ${_php}-cli
              polkit-dev vlc-dev x264-dev gzip zip"
 subpackages="$pkgname-doc
-$pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_ngins:noarch"
+$pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_nginx:noarch"
 source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
 	$pkgname.initd
 	$pkgname-cmake-0001.patch
@@ -124,7 +124,7 @@ _webui() {
      "$subpkgdir"/usr/share/"$pkgname"-webui
   
 	ln -s /var/cache/zoneminder \
-		"$subpkgdir"/usr/share/"$pkname"-webui/htdocs/cache
+		"$subpkgdir"/usr/share/"$pkgname"-webui/htdocs/cache
 	install -g wheel -m 2750 -d "$subpkgdir"/var/log/$pkgname
 
 	# create symlinks from webapps to default http location
