@@ -56,8 +56,8 @@ build() {
     --build=$CBUILD \
     --host=$CHOST \
     --prefix=/usr \
-    --includedir=/usr/include/libjwt \
     --disable-static
+#    --includedir=/usr/include/libjwt \
 	make
 }
 
