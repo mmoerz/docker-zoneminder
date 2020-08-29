@@ -33,7 +33,7 @@ makedepends="git cmake linux-headers
              libjwt-dev
              perl-dev perl-soap-wsdl
              ${_php}-cli
-             polkit-dev vlc-dev x264-dev gzip zip"
+             polkit-dev vlc-dev x264-dev gzip zip nginx"
 subpackages="$pkgname-doc
 $pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_nginx:noarch"
 source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
@@ -148,9 +148,9 @@ _webui_nginx() {
 # for now create directories and set permissions of directories missed
   # but needed
   install -o $www_user -g $www_grp -m 750 \
-    -p "$subpkgdir"/var/lib/zoneminder/events
+    -d "$subpkgdir"/var/lib/zoneminder/events
   install -o $www_user -g $www_grp -m 750 \
-    -p "$subpkgdir"/var/lib/zoneminder/images
+    -d "$subpkgdir"/var/lib/zoneminder/images
 }
 
 sha512sums="ab756e037df12a3b76a915ffc6f7c766c1d47bb72f2763653a2886dc4e715e1bd4fdc5a1d32f856147d786e20fda1e6bad557a3a8da8550de1a4d645d7f76551  zoneminder-20200726.tar.gz
