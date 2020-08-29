@@ -17,8 +17,8 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
     && apk add --no-cache \
         nginx \
         mariadb-client \
-        zoneminder-webui-nginx \
-        perl-number-bytes-human
+          perl-number-bytes-human \
+        zoneminder-webui-nginx@mmoerz
 
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
 
