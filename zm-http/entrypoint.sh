@@ -31,8 +31,8 @@ sed -i "s/\(server_name\s\+\).*/\1$SERVERNAME;/" "$NGINX_ZM_CONFIG"
 # fixes that should be unecessary once a correcte zoneminder.apk is used>
 DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
 DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
-DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/images"
-DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/events"
+DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/images"
+DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/events"
 for DIR in $DIRS; do
   [ ! -d $DIR ] && mkdir -p $DIR
   chown -R $WWW_PERMS $DIR

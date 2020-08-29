@@ -13,10 +13,10 @@ install -m 0644 -o root -g root $res/zm.conf /etc/zm.conf
 rm -rf $res
 
 # fixes that should be unecessary once a correcte zoneminder.apk is used>
-mkdir -p /var/lib/zoneminder/events
-mkdir -p /var/lib/zoneminder/images
-mkdir -p /var/run/zoneminder
-mkdir -p /var/cache/zoneminder
-chown apache:www-data /var/lib/zoneminder/events
-chown apache:www-data /var/lib/zoneminder/images
-chown apache:www-data /var/cache/zoneminder
+#mkdir -p /var/lib/zoneminder/events
+#mkdir -p /var/lib/zoneminder/images
+#mkdir -p /var/run/zoneminder
+#mkdir -p /var/cache/zoneminder
+#chown apache:www-data /var/lib/zoneminder/events
+#chown apache:www-data /var/lib/zoneminder/images
+#chown apache:www-data /var/cache/zoneminder

@@ -34,8 +34,11 @@ makedepends="git cmake linux-headers
              perl-dev perl-soap-wsdl
              ${_php}-cli
              polkit-dev vlc-dev x264-dev gzip zip nginx"
+install="$pkgname.pre-install"
 subpackages="$pkgname-doc
 $pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_nginx:noarch"
+pkgusers=$pkgname
+pkggroups=$pkgname
 source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
 	$pkgname.initd
 	$pkgname-cmake-0001.patch
@@ -77,7 +80,7 @@ snapshot() {
 	abuild checksum
 }
 
-builddir=$srcdir/zoneminder-$pkgver
+builddir="$srcdir"/"$pkgname"-"$pkgver"
 prepare() {
   default_prepare
 
@@ -94,7 +97,7 @@ build() {
 	cd "$builddir"
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DZM_CGIDIR=/usr/share/webapps/$pkgname/cgi-bin \
+		-DZM_CGIDIR=/usr/share/"$pkgname"-webui/cgi-bin \
 		-DZM_LOGDIR=/var/log/zoneminder \
 		-DZM_RUNDIR=/var/run/zoneminder \
 		-DZM_SOCKDIR=/var/run/zoneminder \
@@ -107,17 +110,24 @@ package() {
 	cd "$builddir"
 	local dir
 	make install DESTDIR="$pkgdir"
+
+  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
+  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
+  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/cache/zoneminder
+
 	find "$pkgdir" -name perllocal.pod -delete
 	install -D zmlinkcontent.sh "$pkgdir"/usr/sbin/zmlinkcontent.sh
 
 	install -D -m 755 "$srcdir/$pkgname.initd" "$pkgdir/etc/init.d/$pkgname"
 	chmod 640 "$pkgdir/etc/zm.conf"
+#chown $pkgname:$pkgname 
 }
 
 _webui() {
   description="$description (webui)"
   depends="$_php $_php-apcu $_php-ctype $_php-gd $_php-json
            $_php-pdo_mysql $_php-session $_php-sockets"
+  install="$pkgname"-webui.pre-install
 
   mkdir -p "$subpkgdir"/usr/share/
 	mv "$pkgdir"/usr/share/"$pkgname"-webui \
@@ -126,6 +136,9 @@ _webui() {
 	ln -s /var/cache/zoneminder \
 		"$subpkgdir"/usr/share/"$pkgname"-webui/htdocs/cache
 	install -g wheel -m 2750 -d "$subpkgdir"/var/log/$pkgname
+
+  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
+  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
 
 	# create symlinks from webapps to default http location
 	mkdir -p "$subpkgdir"/var/www/localhost/htdocs \

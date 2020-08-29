@@ -24,7 +24,7 @@ RUN apk update \
          perl-dbi perl-device-serialport perl-libwww \
          perl-lwp-protocol-https perl-mailtools perl-mime-lite \
         perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap \
-       php7 
+       php7 perl-dev 
 
 #
 # mysql-client \

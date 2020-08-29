@@ -10,6 +10,9 @@ ZM_DB_USER=${ZM_DB_USER:-zoneminder}
 ZM_DB_PASS=${ZM_DB_PASS:-zoneminder}
 SERVERNAME=${SERVERNAME:-localhost}
 
+WWW_USER=nginx
+WWW_GRP=nginx
+
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_HOST\)=.*/\1=$ZM_DB_HOST/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PORT\)=.*/\1=$ZM_DB_PORT/g" "$ZM_CONFIG"
@@ -17,14 +20,16 @@ sed -i "s/\(ZM_DB_NAME\)=.*/\1=$ZM_DB_NAME/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_USER\)=.*/\1=$ZM_DB_USER/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 
-echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
-install -d -o apache -g apache /var/run/zoneminder
-install -d -o apache -g apache /var/lib/zoneminder
-install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/images
-install -d -o apache -g apache /usr/share/webapps/zoneminder/htdocs/events
-chown -R apache:apache "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
-chown -R apache:wheel /var/log/zoneminder
-mkdir /run/apache2 && chown apache:apache /run/apache2
+# nginx is used ...
+#echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
+
+install -d -o $WWW_USER -g $WWW_GRP /var/run/zoneminder
+install -d -o $WWW_USER -g $WWW_GRP /var/lib/zoneminder
+install -d -o $WWW_USER -g $WWW_GRP /usr/share/webapps/zoneminder/htdocs/images
+install -d -o $WWW_USER -g $WWW_GRP /usr/share/webapps/zoneminder/htdocs/events
+chown -R $WWW_USER:$WWW_GRP  "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
+chown -R $WWW_USER:wheel /var/log/zoneminder
+#mkdir /run/apache2 && chown apache:apache /run/apache2
 
 #
 # Ugg, Ugg, I need cleanup>
