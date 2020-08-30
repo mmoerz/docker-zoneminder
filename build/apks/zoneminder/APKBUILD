@@ -113,11 +113,11 @@ package() {
 	local dir
 	make install DESTDIR="$pkgdir"
 
-  install -o pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
-  install -o pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
-# install -o pkgname -g $pkgname -m770 -d "$pkgdir"/var/cache/zoneminder
-  install -o pkgname -g $pkgname -m750 -d "$pkgdir"/var/run/zoneminder
-  install -o pkgname -g wheel -m770 -d "$pkgdir"/var/log/zoneminder
+  install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
+  install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
+# install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/cache/zoneminder
+  install -o $pkgname -g $pkgname -m750 -d "$pkgdir"/var/run/zoneminder
+  install -o $pkgname -g wheel -m770 -d "$pkgdir"/var/log/zoneminder
 
 	find "$pkgdir" -name perllocal.pod -delete
 	install -D zmlinkcontent.sh "$pkgdir"/usr/sbin/zmlinkcontent.sh
@@ -176,4 +176,6 @@ sha512sums="ab756e037df12a3b76a915ffc6f7c766c1d47bb72f2763653a2886dc4e715e1bd4fd
 ae02daacc41e2b32ca0da5cf407c05447a5ce8e0cf035421111856511dc1075da75d9da32f8f013940c631215a62f3133860b35225bda405230b94a6b097c865  zoneminder.initd
 aa4dc2f3ade24c30e8b31f89f332fd9cad307cd356ff7c72d0ff3e4032e8d1e47ea6387fb0b2b5fc6dbae46e35f92e3cbd07b13530487dcb544adb462f13555e  zoneminder-cmake-0001.patch
 056d08c90b665e96d3e371e95ceb10c36bed5df03b52b98e6e10e58194298a2ebd1e8ff0682ea751d6e14d76896351aa91b6283f20735b5ad653d836704b725f  zoneminder-cmake-0002.patch
-5603af75209114dca2533f8acde33b50b67a71786c51c5468383a3bdb28fe3e27b422b58b0374b411b945681ff59714d33a95c1e9148ec40a2c477a4b25fecef  git-archive-all.sh"
+5603af75209114dca2533f8acde33b50b67a71786c51c5468383a3bdb28fe3e27b422b58b0374b411b945681ff59714d33a95c1e9148ec40a2c477a4b25fecef  git-archive-all.sh
+b9df0ea4c8e8560944c7558a4a3aefcef106dbba7a2ec6b380f5d8daedc193d34e360d911d2aff360737693f71ae4c2b491dedd74fa5096d1f2b3e98db9013e3  zoneminder.pre-install
+31d6237ff4335fc85fc96ce040790a4cf3a451df2324a87f1d94dcfd25789a772187d13e1d88f8dd9104ae612658db99c37d752a338e7a40cf710012c5640e77  zoneminder-webui-nginx.pre-install"

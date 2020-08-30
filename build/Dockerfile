@@ -24,12 +24,13 @@ RUN apk update \
          perl-dbi perl-device-serialport perl-libwww \
          perl-lwp-protocol-https perl-mailtools perl-mime-lite \
         perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap \
-         perl-time-hires  \
+         perl-time-hires perl-term-readkey perl-test-taint perl-module-runtime \
         php7 \
         polkit-dev vlc-dev x264-dev gzip zip nginx \
           mariadb-connector-c-dev pcre-dev \
           php7-apcu php7-ctype php7-gd php7-json \
-           php7-pdo_mysql php7-session php7-sockets
+           php7-pdo_mysql php7-session php7-sockets \
+           bzip2 ffmpeg libproc procps
 
 #
 # mysql-client \

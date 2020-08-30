@@ -1,0 +1,5 @@
+#!/bin/sh
+
+gpasswd -a nginx zoneminder 2>/dev/null
+
+exit 0
