@@ -19,10 +19,11 @@ depends="bash linux-headers
          perl-dbi perl-device-serialport perl-libwww
          perl-lwp-protocol-https perl-mailtools perl-mime-lite
          perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap
+         perl-crypt-eksblowfish perl-data-entropy
          perl-time-hires perl-number-bytes-human 
          polkit vlc x264 gzip
          procps sudo"
-# libdata-uuid-perl data-entropy-perl libcrypt-eksblowfish-perl
+# libdata-uuid-perl data-entropy-perl 
 # libjs-jquery libjs-mootools
 #
 # perl-device-serialport ?? for real?
@@ -119,6 +120,7 @@ package() {
 
   install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
   install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
+  install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/temp
 # install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/cache/zoneminder
   install -o $pkgname -g $pkgname -m750 -d "$pkgdir"/var/run/zoneminder
   install -o $pkgname -g wheel -m770 -d "$pkgdir"/var/log/zoneminder
