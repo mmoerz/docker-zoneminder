@@ -18,6 +18,7 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
         nginx \
         mariadb-client \
           perl-number-bytes-human \
+        zoneminder-webui@mmoerz \
         zoneminder-webui-nginx@mmoerz
 
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package

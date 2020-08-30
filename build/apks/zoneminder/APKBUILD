@@ -36,7 +36,7 @@ makedepends="git cmake linux-headers
              polkit-dev vlc-dev x264-dev gzip zip nginx"
 install="$pkgname.pre-install"
 subpackages="$pkgname-doc
-$pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_nginx:noarch"
+$pkgname-webui:_webui $pkgname-webui-nginx:_webui_nginx:noarch"
 pkgusers=$pkgname
 pkggroups=$pkgname
 source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
@@ -44,6 +44,8 @@ source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminde
 	$pkgname-cmake-0001.patch
 	$pkgname-cmake-0002.patch
 	git-archive-all.sh
+  $pkgname.pre-install
+  $pkgname-webui-nginx.pre-install
 	"
 
 # secfixes:
@@ -111,15 +113,17 @@ package() {
 	local dir
 	make install DESTDIR="$pkgdir"
 
-  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
-  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
-  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/cache/zoneminder
+  install -o pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
+  install -o pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
+# install -o pkgname -g $pkgname -m770 -d "$pkgdir"/var/cache/zoneminder
+  install -o pkgname -g $pkgname -m750 -d "$pkgdir"/var/run/zoneminder
+  install -o pkgname -g wheel -m770 -d "$pkgdir"/var/log/zoneminder
 
 	find "$pkgdir" -name perllocal.pod -delete
 	install -D zmlinkcontent.sh "$pkgdir"/usr/sbin/zmlinkcontent.sh
 
 	install -D -m 755 "$srcdir/$pkgname.initd" "$pkgdir/etc/init.d/$pkgname"
-	chmod 640 "$pkgdir/etc/zm.conf"
+	chmod 640 "$pkgdir"/etc/zm.conf
 #chown $pkgname:$pkgname 
 }
 
@@ -127,7 +131,7 @@ _webui() {
   description="$description (webui)"
   depends="$_php $_php-apcu $_php-ctype $_php-gd $_php-json
            $_php-pdo_mysql $_php-session $_php-sockets"
-  install="$pkgname"-webui.pre-install
+#install="$pkgname"-webui.pre-install
 
   mkdir -p "$subpkgdir"/usr/share/
 	mv "$pkgdir"/usr/share/"$pkgname"-webui \
@@ -135,10 +139,10 @@ _webui() {
   
 	ln -s /var/cache/zoneminder \
 		"$subpkgdir"/usr/share/"$pkgname"-webui/htdocs/cache
-	install -g wheel -m 2750 -d "$subpkgdir"/var/log/$pkgname
+#	install -g wheel -m 2750 -d "$subpkgdir"/var/log/$pkgname
 
-  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
-  install -o nginx -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
+#install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/events
+#install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
 
 	# create symlinks from webapps to default http location
 	mkdir -p "$subpkgdir"/var/www/localhost/htdocs \
@@ -154,16 +158,18 @@ www_grp=nginx
 _webui_nginx() {
   description="$description (webui nginx configuration)"
 	depends="$pkgname-webui nginx"
+  install="$pkgname-webui-nginx.pre-install"
 
   mkdir -p "$subpkgdir"/etc/nginx/conf.d
-  # copy some config file here
+  # copy some example config file here?
+  
 
 # for now create directories and set permissions of directories missed
   # but needed
-  install -o $www_user -g $www_grp -m 750 \
-    -d "$subpkgdir"/var/lib/zoneminder/events
-  install -o $www_user -g $www_grp -m 750 \
-    -d "$subpkgdir"/var/lib/zoneminder/images
+#  install -o $www_user -g $www_grp -m 750 \
+#    -d "$subpkgdir"/var/lib/zoneminder/events
+#  install -o $www_user -g $www_grp -m 750 \
+#    -d "$subpkgdir"/var/lib/zoneminder/images
 }
 
 sha512sums="ab756e037df12a3b76a915ffc6f7c766c1d47bb72f2763653a2886dc4e715e1bd4fdc5a1d32f856147d786e20fda1e6bad557a3a8da8550de1a4d645d7f76551  zoneminder-20200726.tar.gz

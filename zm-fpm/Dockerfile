@@ -1,5 +1,6 @@
 #FROM alpine:3.12
-FROM alpine:3.11
+#FROM alpine:3.11
+FROM zm-base:0.1
 #FROM php:7.1-fpm-alpine
 
 #MAINTAINER Philipp Schmitt <philipp@schmitt.co>

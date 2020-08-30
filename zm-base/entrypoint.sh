@@ -23,12 +23,18 @@ sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 # nginx is used ...
 #echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
 
-install -d -o $WWW_USER -g $WWW_GRP /var/run/zoneminder
-install -d -o $WWW_USER -g $WWW_GRP /var/lib/zoneminder
-install -d -o $WWW_USER -g $WWW_GRP /usr/share/webapps/zoneminder/htdocs/images
-install -d -o $WWW_USER -g $WWW_GRP /usr/share/webapps/zoneminder/htdocs/events
-chown -R $WWW_USER:$WWW_GRP  "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
-chown -R $WWW_USER:wheel /var/log/zoneminder
+[ ! -d /var/run/zoneminder ] && echo "/var/run/zoneminder missing"
+[ ! -d /var/run/zoneminder ] && echo "/usr/share/zoneminder-webui/htdocs/images missing"
+[ ! -d /var/run/zoneminder ] && echo "/usr/share/zoneminder-webui/htdocs/events missing"
+[ ! -d /var/run/zoneminder ] && echo "/var/lib/zoneminder missing"
+[ ! -d /var/log/zoneminder ] && echo "/var/log/zoneminder missing"
+
+#install -d -o $WWW_USER -g $WWW_GRP /var/run/zoneminder
+#install -d -o $WWW_USER -g $WWW_GRP /var/lib/zoneminder
+#install -d -o $WWW_USER -g $WWW_GRP /usr/share/zoneminder-webui/htdocs/images
+#install -d -o $WWW_USER -g $WWW_GRP /usr/share/zoneminder-webui/htdocs/events
+#chown -R $WWW_USER:$WWW_GRP  "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
+#chown -R $WWW_USER:wheel /var/log/zoneminder
 #mkdir /run/apache2 && chown apache:apache /run/apache2
 
 #
@@ -57,4 +63,5 @@ then
 fi
 
 # Start server
-exec supervisord
+#exec supervisord
+/bin/bash

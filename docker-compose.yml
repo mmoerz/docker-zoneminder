@@ -11,6 +11,7 @@ services:
 
   zoneminder:
     build: zm-base
+    image: zm-base:0.1
     depends_on:
       - database
     env_file:
