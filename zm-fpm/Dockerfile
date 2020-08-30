@@ -22,7 +22,8 @@ RUN apk update \
     && apk add --no-cache \
         nginx \ 
         mariadb-client \
-        zoneminder-webui-nginx@mmoerz \
+        zoneminder-cgi@mmoerz \
+        zoneminder-webui
         php7-fpm php7-pdo php7-pdo_mysql php7-ctype 
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
 

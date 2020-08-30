@@ -5,7 +5,7 @@ WWW_GROUP=nginx
 WWW_PERMS=$WWW_USER:$WWW_GROUP
 
 # Edit config file
-ZM_CONFIG=/etc/zm.conf
+ZM_CONFIG=/etc/zoneminder/zm.conf
 ZM_DB_TYPE=${ZM_DB_TYPE:-mysql}
 ZM_DB_HOST=${ZM_DB_HOST:-zm.db}
 ZM_DB_PORT=${ZM_DB_PORT:-3306}
@@ -28,15 +28,26 @@ sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 sed -i "s/\(worker_processes\s\+\).*/\1$NGINX_WORKER;/" "$NGINX_CONFIG"
 sed -i "s/\(server_name\s\+\).*/\1$SERVERNAME;/" "$NGINX_ZM_CONFIG"
 
-# fixes that should be unecessary once a correcte zoneminder.apk is used>
-DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
-DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
-DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/images"
-DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/events"
-for DIR in $DIRS; do
-  [ ! -d $DIR ] && mkdir -p $DIR
-  chown -R $WWW_PERMS $DIR
+# this is for develepment purposes, test for essential directories
+TESTDIRS="/var/run/zoneminder /var/lib/zoneminder /var/log/zoneminder"
+TESTDIRS="$TESTDIRS /var/lib/zoneminder/images"
+TESTDIRS="$TESTDIRS /var/lib/zoneminder/events"
+TESTDIRS="$TESTDIRS /usr/share/zoneminder-webui/htdocs/images"
+TESTDIRS="$TESTDIRS /usr/share/zoneminder-webui/htdocs/events"
+
+for Dir in $TESTDIRS ; do
+  [ ! -d /var/run/zoneminder ] && echo "WARNING: $Dir is missing"
 done
+
+# fixes that should be unecessary once a correcte zoneminder.apk is used>
+#DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
+#DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
+#DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/images"
+#DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/events"
+#for DIR in $DIRS; do
+#  [ ! -d $DIR ] && mkdir -p $DIR
+#  chown -R $WWW_PERMS $DIR
+#done
 
 chown -R nginx:nginx "$ZM_CONFIG" /var/run/zoneminder
 #chown -R nginx:wheel /var/log/zoneminder

@@ -100,7 +100,7 @@ build() {
 	cd "$builddir"
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-    -DZM_CONFIG_DIR=/etc/$pkgname \
+    -DZM_CONFIG_DIR=/etc/zoneminder \
 		-DZM_CGIDIR=/usr/share/"$pkgname"-cgi/cgi-bin \
 		-DZM_LOGDIR=/var/log/zoneminder \
 		-DZM_RUNDIR=/var/run/zoneminder \
@@ -108,6 +108,7 @@ build() {
 		-DZM_TMPDIR=/var/lib/zoneminder/temp \
 		-DZM_WEBDIR=/usr/share/"$pkgname"-webui/htdocs \
 		. && make
+#    -DZM_CONFIG_SUBDIR=/etc/zoneminder \
 # -DZM_PATH_ZMS=/usr/share/"$pkgname"-cgi/cgi-bin \
 }
 
@@ -126,7 +127,7 @@ package() {
 	install -D zmlinkcontent.sh "$pkgdir"/usr/sbin/zmlinkcontent.sh
 
 	install -D -m 755 "$srcdir/$pkgname.initd" "$pkgdir/etc/init.d/$pkgname"
-	chmod 640 "$pkgdir"/etc/zm.conf
+	chmod 640 "$pkgdir"/etc/zoneminder/zm.conf
 #chown $pkgname:$pkgname 
 }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
 
 # Edit config file
-ZM_CONFIG=/etc/zm.conf
+ZM_CONFIG=/etc/zoneminder/zm.conf
 ZM_DB_TYPE=${ZM_DB_TYPE:-mysql}
 ZM_DB_HOST=${ZM_DB_HOST:-zm.db}
 ZM_DB_PORT=${ZM_DB_PORT:-3306}

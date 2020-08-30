@@ -18,4 +18,4 @@ docker tag $gituser/zoneminder:${tagdate} $gituser/zoneminder:latest
 
 echo -en "building finished\n\tVersion: $version\n"
 
-docker run -it --rm $gituser/zoneminder:latest
+docker run -it --rm --name zoneminder-build $gituser/zoneminder:latest
