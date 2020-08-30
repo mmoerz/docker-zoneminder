@@ -36,7 +36,8 @@ makedepends="git cmake linux-headers
              polkit-dev vlc-dev x264-dev gzip zip nginx"
 install="$pkgname.pre-install"
 subpackages="$pkgname-doc
-$pkgname-webui:_webui $pkgname-webui-nginx:_webui_nginx:noarch"
+$pkgname-cgi:_cgi
+$pkgname-webui:_webui:noarch $pkgname-webui-nginx:_webui_nginx:noarch"
 pkgusers=$pkgname
 pkggroups=$pkgname
 source="zoneminder-$pkgver.tar.gz::http://natoka.de/archive/zoneminder/zoneminder-$pkgver.tar.gz
@@ -99,13 +100,15 @@ build() {
 	cd "$builddir"
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DZM_CGIDIR=/usr/share/"$pkgname"-webui/cgi-bin \
+    -DZM_CONFIG_DIR=/etc/$pkgname \
+		-DZM_CGIDIR=/usr/share/"$pkgname"-cgi/cgi-bin \
 		-DZM_LOGDIR=/var/log/zoneminder \
 		-DZM_RUNDIR=/var/run/zoneminder \
 		-DZM_SOCKDIR=/var/run/zoneminder \
 		-DZM_TMPDIR=/var/lib/zoneminder/temp \
 		-DZM_WEBDIR=/usr/share/"$pkgname"-webui/htdocs \
 		. && make
+# -DZM_PATH_ZMS=/usr/share/"$pkgname"-cgi/cgi-bin \
 }
 
 package() {
@@ -127,6 +130,20 @@ package() {
 #chown $pkgname:$pkgname 
 }
 
+_cgi() {
+  description="$description (cgi)"
+
+  mkdir -p "$subpkgdir"/usr/share/
+  mv "$pkgdir"/usr/share/"$pkgname"-cgi \
+     "$subpkgdir"/usr/share/"$pkgname"-cgi
+
+	# create symlinks from cgi binary dir to http location
+  mkdir -p \
+		"$subpkgdir"/var/www/localhost/cgi-bin
+	ln -sf /usr/share/"$pkgname"-webui/cgi-bin \
+		"$subpkgdir"/var/www/localhost/cgi-bin/zm
+}
+
 _webui() {
   description="$description (webui)"
   depends="$_php $_php-apcu $_php-ctype $_php-gd $_php-json
@@ -145,12 +162,9 @@ _webui() {
 #install -o $pkgname -g $pkgname -m770 -d "$pkgdir"/var/lib/zoneminder/images
 
 	# create symlinks from webapps to default http location
-	mkdir -p "$subpkgdir"/var/www/localhost/htdocs \
-		"$subpkgdir"/var/www/localhost/cgi-bin
+	mkdir -p "$subpkgdir"/var/www/localhost/htdocs
 	ln -sf /usr/share/"$pkgname"-webui/htdocs \
 		"$subpkgdir"/var/www/localhost/htdocs/zm
-	ln -sf /usr/share/"$pkgname"-webui/cgi-bin \
-		"$subpkgdir"/var/www/localhost/cgi-bin/zm
 }
 
 www_user=nginx

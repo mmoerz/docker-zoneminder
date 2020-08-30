@@ -3,6 +3,7 @@ FROM alpine:3.12
 #MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 #MAINTAINER Jason Antman <jason@jasonantman.com>
 MAINTAINER Michael Moerz <michael@moerz.co.at>
+VOLUME [ "/etc/zoneminder", "/var/log/zoneminder", "/var/log/nginx" ]
 
 ARG version
 ARG build_date

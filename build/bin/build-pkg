@@ -1,0 +1,7 @@
+#!/bin/bash
+
+abuild deps
+abuild unpack
+abuild prepare
+abuild build
+abuild rootpkg

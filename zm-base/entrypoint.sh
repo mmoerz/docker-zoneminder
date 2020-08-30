@@ -20,19 +20,20 @@ sed -i "s/\(ZM_DB_NAME\)=.*/\1=$ZM_DB_NAME/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_USER\)=.*/\1=$ZM_DB_USER/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PASS\)=.*/\1=$ZM_DB_PASS/g" "$ZM_CONFIG"
 
-# nginx is used ...
-#echo "ServerName $SERVERNAME" > /etc/apache2/conf.d/0_servername.conf
+# nginx is used and should be part of the frontend containers
 
-[ ! -d /var/run/zoneminder ] && echo "/var/run/zoneminder missing"
-[ ! -d /var/run/zoneminder ] && echo "/usr/share/zoneminder-webui/htdocs/images missing"
-[ ! -d /var/run/zoneminder ] && echo "/usr/share/zoneminder-webui/htdocs/events missing"
-[ ! -d /var/run/zoneminder ] && echo "/var/lib/zoneminder missing"
-[ ! -d /var/log/zoneminder ] && echo "/var/log/zoneminder missing"
+# this is for develepment purposes, test for essential directories
+TESTDIRS="/var/run/zoneminder /var/lib/zoneminder /var/log/zoneminder"
+TESTDIRS="$TESTDIRS /var/lib/zoneminder/images"
+TESTDIRS="$TESTDIRS /var/lib/zoneminder/events"
+TESTDIRS="$TESTDIRS /usr/share/zoneminder-webui/htdocs/images"
+TESTDIRS="$TESTDIRS /usr/share/zoneminder-webui/htdocs/events"
+
+for Dir in $TESTDIRS ; do
+  [ ! -d /var/run/zoneminder ] && echo "WARNING: $Dir is missing"
+done
 
 #install -d -o $WWW_USER -g $WWW_GRP /var/run/zoneminder
-#install -d -o $WWW_USER -g $WWW_GRP /var/lib/zoneminder
-#install -d -o $WWW_USER -g $WWW_GRP /usr/share/zoneminder-webui/htdocs/images
-#install -d -o $WWW_USER -g $WWW_GRP /usr/share/zoneminder-webui/htdocs/events
 #chown -R $WWW_USER:$WWW_GRP  "$ZM_CONFIG" /var/lib/zoneminder/* /var/run/zoneminder
 #chown -R $WWW_USER:wheel /var/log/zoneminder
 #mkdir /run/apache2 && chown apache:apache /run/apache2
