@@ -17,6 +17,7 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
     && apk update \
     && apk add --no-cache \
         supervisor mariadb-client \
+        perl-data-entropy@edgetest \
         zoneminder@mmoerz \
         perl-number-bytes-human
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
