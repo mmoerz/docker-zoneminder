@@ -14,6 +14,7 @@ ARG buildusername
 RUN apk update \
     && apk add --no-cache \
  bash alpine-sdk automake autoconf libtool pkgconf cmake apkbuild-cpan \
+ jansson-dev doxygen check check-dev libxaw graphviz \
  perl-dev perl-utils git-perl perl-git perl-error perl libbz2 \
  bzip2-dev gzip zip lftp \
  polkit vlc x264 gzip \
@@ -21,10 +22,12 @@ RUN apk update \
  ffmpeg-dev x264-dev pcre-dev libgcrypt-dev vlc-dev libvncserver-dev \
  libexecinfo-dev polkit-dev \
  perl perl-archive-zip perl-date-manip perl-dbd-mysql \
-         perl-dbi perl-device-serialport perl-libwww \
-         perl-lwp-protocol-https perl-mailtools perl-mime-lite \
-        perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap \
-         perl-time-hires perl-term-readkey perl-test-taint perl-module-runtime \
+ perl-dbi perl-device-serialport perl-libwww \
+ perl-lwp-protocol-https perl-mailtools perl-mime-lite \
+ perl-mime-tools perl-php-serialization perl-sys-meminfo perl-sys-mmap \
+ perl-time-hires perl-term-readkey perl-test-taint perl-module-runtime \
+ perl-xml-parser perl-sub-identify perl-appconfig perl-sub-install \
+ perl-b-hooks-endofscope perl-variable-magic perl-package-stash \
         php7 \
         polkit-dev vlc-dev x264-dev gzip zip nginx \
           mariadb-connector-c-dev pcre-dev \
@@ -33,10 +36,8 @@ RUN apk update \
            bzip2 ffmpeg libproc procps
 
 #
-# mysql-client \
-#        apache2 php7-apache2 php7-fpm \
-#        php7-pdo php7-pdo_mysql supervisor perl-data-uuid \
-#        perl-data-dump php7-ctype perl-log-log4perl \
+#        perl-data-uuid \
+#        perl-data-dump perl-log-log4perl \
 #	      perl-sys-meminfo perl-moose perl-cgi \
 #        libxml2-dev \
 #        perl-term-readkey perl-json perl-appconfig perl-template-toolkit \

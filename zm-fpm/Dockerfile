@@ -13,17 +13,14 @@ ARG build_date
 
 #RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
 #    && apk update \
-RUN apk update \
-    && apk add --no-cache \
-        wget \
-    && cd /etc/apk/keys/ && wget http://natoka.de/alpine/mmoerz.rsa.pub \
+RUN cd /etc/apk/keys/ && wget http://natoka.de/alpine/mmoerz.rsa.pub \
     && echo "@mmoerz http://natoka.de/alpine/packages/mmoerz/" >> /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
         nginx \ 
         mariadb-client \
         zoneminder-cgi@mmoerz \
-        zoneminder-webui
+        zoneminder-webui@mmoerz \
         php7-fpm php7-pdo php7-pdo_mysql php7-ctype 
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
 

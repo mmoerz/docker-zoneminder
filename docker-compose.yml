@@ -12,12 +12,13 @@ services:
   zoneminder:
     build: zm-base
     image: zm-base:0.1
+    container_name: zoneminder
     depends_on:
       - database
     env_file:
       - ./zoneminder.env
     volumes:
-      - ./config/zoneminder:/etc
+      - ./config/zoneminder:/etc/zoneminder
       - ./log:/var/log/zoneminder      
     links:
       - database:zm.db
@@ -25,12 +26,14 @@ services:
   phpfpm:
     build: zm-fpm
     image: zm-fpm:0.1
+    container_name: zoneminder-fpm
     depends_on:
       - database
       - zoneminder
     env_file:
       - ./zoneminder.env
     volumes:
+      - ./config/zoneminder:/etc/zoneminder
       - ./cache:/var/cache/zoneminder
     links:
       - database:zm.db
@@ -41,12 +44,14 @@ services:
   frontend:
     build: zm-http
     image: zm-http:0.1
+    container_name: zoneminder-nginx
     depends_on:
       - database
       - zoneminder
     env_file:
       - ./zoneminder.env
     volumes:
+      - ./config/zoneminder:/etc/zoneminder
       - ./vlz:/var/lib/zoneminder
       - ./log/nginx:/var/log/nginx
       - ./cache:/var/cache/zoneminder

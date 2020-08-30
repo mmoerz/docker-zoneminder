@@ -8,11 +8,7 @@ VOLUME [ "/etc/zoneminder", "/var/log/zoneminder", "/var/log/nginx" ]
 ARG version
 ARG build_date
 
-RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk update \
-    && apk add --no-cache \
-        wget \
-    && cd /etc/apk/keys/ && wget http://natoka.de/alpine/mmoerz.rsa.pub \
+RUN cd /etc/apk/keys/ && wget http://natoka.de/alpine/mmoerz.rsa.pub \
     && echo "@mmoerz http://natoka.de/alpine/packages/mmoerz/" >> /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
