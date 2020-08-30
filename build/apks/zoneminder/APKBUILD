@@ -128,7 +128,7 @@ package() {
 
 	install -D -m 755 "$srcdir/$pkgname.initd" "$pkgdir/etc/init.d/$pkgname"
 	chmod 640 "$pkgdir"/etc/zoneminder/zm.conf
-#chown $pkgname:$pkgname 
+  chown -R :$pkgname "$pkgdir"/etc/zoneminder
 }
 
 _cgi() {

@@ -21,16 +21,13 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
         perl-number-bytes-human
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
 
-RUN tar -czf /root/etc_zoneminder.tar.gz /etc/zoneminder
-
 COPY ressources /root/build/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /root/build/install.sh /entrypoint.sh
 RUN /root/build/install.sh
 
-#EXPOSE 80
-#EXPOSE 443
+RUN tar -czf /root/etc_zoneminder.tar.gz /etc/zoneminder
 
 ENV ZM_DB_TYPE=mysql ZM_DB_HOST=zm.db \
     ZM_DB_PORT=3306 ZM_DB_NAME=zoneminder ZM_DB_USER=zoneminder \

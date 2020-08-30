@@ -10,8 +10,8 @@ ZM_DB_USER=${ZM_DB_USER:-zoneminder}
 ZM_DB_PASS=${ZM_DB_PASS:-zoneminder}
 SERVERNAME=${SERVERNAME:-localhost}
 
-WWW_USER=nginx
-WWW_GRP=nginx
+WWW_USER=zoneminder
+WWW_GRP=zoneminder
 
 # if zm.conf is missing, restore all configuration files
 if [ ! -f $ZM_CONFIG ] ; then
@@ -69,5 +69,5 @@ then
 fi
 
 # Start server
-#exec supervisord
-/bin/bash
+exec supervisord
+#/bin/bash
