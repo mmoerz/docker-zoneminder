@@ -18,6 +18,11 @@ NGINX_ZM_CONFIG=/etc/nginx/conf.d/zoneminder.conf
 NGINX_WORKER=${NGINX_WORKER:-1}
 SERVERNAME=${SERVERNAME:-localhost}
 
+# if zm.conf is missing, restore all configuration files
+if [ ! -f $ZM_CONFIG ] ; then
+  cd / && tar -xzf /root/etc_zoneminder.tar.gz
+fi
+
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_HOST\)=.*/\1=$ZM_DB_HOST/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_PORT\)=.*/\1=$ZM_DB_PORT/g" "$ZM_CONFIG"

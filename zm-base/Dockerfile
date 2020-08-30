@@ -3,7 +3,7 @@ FROM alpine:3.12
 #MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 #MAINTAINER Jason Antman <jason@jasonantman.com>
 MAINTAINER Michael Moerz <michael@moerz.co.at>
-VOLUME [ "/etc/zoneminder", "/var/log/zoneminder" ]
+VOLUME [ "/var/log/zoneminder" ]
 
 ARG version
 ARG build_date
@@ -20,6 +20,8 @@ RUN echo "@edgetest http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/
         zoneminder@mmoerz \
         perl-number-bytes-human
 # perl package that fixes a missing dep in the 1.32.5 zoneminder package
+
+RUN tar -czf /root/etc_zoneminder.tar.gz /etc/zoneminder
 
 COPY ressources /root/build/
 
