@@ -18,6 +18,7 @@ WWW_GRP=zoneminder
 if [ ! -f $ZM_CONFIG ] ; then
   cd / && tar -xzf /root/etc_zoneminder.tar.gz
 fi
+# unknown what breaks the permissions, however this is needed
 # fix permissions - a common error when rebuilding the docker image
 # uids and gids may change - and files become inaccessible
 chown -R zoneminder:zoneminder $ZM_CONFIG_DIR

@@ -138,11 +138,13 @@ _cgi() {
   mkdir -p "$subpkgdir"/usr/share/
   mv "$pkgdir"/usr/share/"$pkgname"-cgi \
      "$subpkgdir"/usr/share/"$pkgname"-cgi
+  chmod 0755 "$subpkgdir"/usr/share/"$pkgname"-cgi
+  chmod 0755 "$subpkgdir"/usr/share/"$pkgname"-cgi/cgi-bin
 
 	# create symlinks from cgi binary dir to http location
   mkdir -p \
 		"$subpkgdir"/var/www/localhost/cgi-bin
-	ln -sf /usr/share/"$pkgname"-webui/cgi-bin \
+	ln -sf /usr/share/"$pkgname"-cgi/cgi-bin \
 		"$subpkgdir"/var/www/localhost/cgi-bin/zm
 }
 
@@ -155,6 +157,8 @@ _webui() {
   mkdir -p "$subpkgdir"/usr/share/
 	mv "$pkgdir"/usr/share/"$pkgname"-webui \
      "$subpkgdir"/usr/share/"$pkgname"-webui
+  chmod 0755 "$subpkgdir"/usr/share/"$pkgname"-webui
+  chmod 0755 "$subpkgdir"/usr/share/"$pkgname"-webui/htdocs
   
 	ln -s /var/cache/zoneminder \
 		"$subpkgdir"/usr/share/"$pkgname"-webui/htdocs/cache
@@ -194,4 +198,4 @@ aa4dc2f3ade24c30e8b31f89f332fd9cad307cd356ff7c72d0ff3e4032e8d1e47ea6387fb0b2b5fc
 056d08c90b665e96d3e371e95ceb10c36bed5df03b52b98e6e10e58194298a2ebd1e8ff0682ea751d6e14d76896351aa91b6283f20735b5ad653d836704b725f  zoneminder-cmake-0002.patch
 5603af75209114dca2533f8acde33b50b67a71786c51c5468383a3bdb28fe3e27b422b58b0374b411b945681ff59714d33a95c1e9148ec40a2c477a4b25fecef  git-archive-all.sh
 b9df0ea4c8e8560944c7558a4a3aefcef106dbba7a2ec6b380f5d8daedc193d34e360d911d2aff360737693f71ae4c2b491dedd74fa5096d1f2b3e98db9013e3  zoneminder.pre-install
-31d6237ff4335fc85fc96ce040790a4cf3a451df2324a87f1d94dcfd25789a772187d13e1d88f8dd9104ae612658db99c37d752a338e7a40cf710012c5640e77  zoneminder-webui-nginx.pre-install"
+1922918e0c98054b701f3901fb25c99a26793da908dc396c943381be8ca928c78ad531c4b52dcbbe9709b582d2f93a52e5cb061d3ef116fc4c4c40d0c8a88e6d  zoneminder-webui-nginx.pre-install"

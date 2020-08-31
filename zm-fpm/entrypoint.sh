@@ -4,7 +4,8 @@ WWW_GROUP=nginx
 WWW_PERMS=$WWW_USER:$WWW_GROUP
 
 # Edit config file
-ZM_CONFIG=/etc/zoneminder/zm.conf
+ZM_CONFIG_DIR=/etc/zoneminder
+ZM_CONFIG=$ZM_CONFIG_DIR/zm.conf
 ZM_DB_TYPE=${ZM_DB_TYPE:-mysql}
 ZM_DB_HOST=${ZM_DB_HOST:-zm.db}
 ZM_DB_PORT=${ZM_DB_PORT:-3306}
@@ -17,6 +18,9 @@ SERVERNAME=${SERVERNAME:-localhost}
 if [ ! -f $ZM_CONFIG ] ; then
   cd / && tar -xzf /root/etc_zoneminder.tar.gz
 fi
+# fix permissions - a common error when rebuilding the docker image
+# uids and gids may change - and files become inaccessible
+chown -R zoneminder:zoneminder $ZM_CONFIG_DIR
 
 sed -i "s/\(ZM_DB_TYPE\)=.*/\1=$ZM_DB_TYPE/g" "$ZM_CONFIG"
 sed -i "s/\(ZM_DB_HOST\)=.*/\1=$ZM_DB_HOST/g" "$ZM_CONFIG"

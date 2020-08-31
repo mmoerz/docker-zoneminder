@@ -11,5 +11,5 @@ install -m 0644 -o root -g root $res/03-web.conf $zmconfd/03-web.conf
 rm -rf $res
 
 # add missing directories (for now)
-install -m 0644 -o root -g root -d /usr/share/zoneminder-webui/htdocs
+install -m 0755 -o root -g root -d /usr/share/zoneminder-webui/htdocs
 

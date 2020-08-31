@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM zm-base:0.1
 
 #MAINTAINER Philipp Schmitt <philipp@schmitt.co>
 #MAINTAINER Jason Antman <jason@jasonantman.com>
