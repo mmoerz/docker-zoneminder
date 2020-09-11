@@ -40,15 +40,18 @@ for Dir in $TESTDIRS ; do
   [ ! -d /var/run/zoneminder ] && echo "WARNING: $Dir is missing"
 done
 
+
 #DIRS="/var/run/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events"
 #DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
 #DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/images"
 #DIRS="$DIRS /usr/share/webapps/zoneminder/htdocs/events"
 #DIRS="$DIRS $ZM_CONFIG"
-#for DIR in $DIRS; do
-#  [ ! -d $DIR ] && mkdir -p $DIR
-#  chown $WWW_PERMS $DIR
-#done
+# TODO: move this into the .apk
+DIRS=/var/cache/zoneminder
+for DIR in $DIRS; do
+  [ ! -d $DIR ] && mkdir -p $DIR
+  chown $WWW_PERMS $DIR
+done
 
 #chown -R $WEB_SERVER_PERSMS "$ZM_CONFIG" 
 #/var/run/zoneminder

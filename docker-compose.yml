@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 services:
   database:
@@ -22,6 +22,7 @@ services:
       - ./log:/var/log/zoneminder      
     links:
       - database:zm.db
+    ipc: shareable
   
   phpfpm:
     build: zm-fpm
@@ -40,6 +41,7 @@ services:
       - zoneminder:zm
     ports:
       - 9001:9000
+    ipc: "container:zoneminder"
 
   frontend:
     build: zm-http
@@ -62,6 +64,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    tty: true
+    stdin_open: true
 
 #    frontend:
 #        image: nginx:stable-alpine

@@ -53,10 +53,13 @@ done
 #DIRS="$DIRS /var/lib/zoneminder/images /var/cache/zoneminder"
 #DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/images"
 #DIRS="$DIRS /usr/share/zoneminder-webui/htdocs/events"
-#for DIR in $DIRS; do
-#  [ ! -d $DIR ] && mkdir -p $DIR
-#  chown -R $WWW_PERMS $DIR
-#done
+# TODO: move this into the .apk
+DIRS=/var/cache/zoneminder
+for DIR in $DIRS; do
+  [ ! -d $DIR ] && mkdir -p $DIR
+  chown $WWW_PERMS $DIR
+done
+
 
 chown -R nginx:nginx /var/run/zoneminder
 #chown -R nginx:wheel /var/log/zoneminder
